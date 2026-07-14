@@ -1,7 +1,7 @@
 const tg = window.Telegram.WebApp;
 tg.expand(); tg.ready();
 
-const API_BASE = "https://bountiful-wholeness-production-1c26.up.railway.app"; // ← اینجا عوض کن
+const API_BASE = "https://self-production-6223.up.railway.app"; // ← اینجا عوض کن
 
 let userId = tg.initDataUnsafe?.user?.id;
 let userData = {};
