@@ -2,35 +2,46 @@
 <html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-  <title>NovaSelf Mini App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+  <title>NovaSelf</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"/>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
-    <header>
-      <h1>🌟 NovaSelf</h1>
-      <p id="user-info"></p>
+    <header class="glass">
+      <h1>NovaSelf <span class="star">✦</span></h1>
+      <p id="greeting" class="greeting"></p>
     </header>
 
-    <div class="status-bar">
-      <div id="status" class="status">🔴 خاموش</div>
-      <button id="toggle-btn" class="toggle-btn">روشن کردن سلف</button>
+    <!-- Status -->
+    <div id="status-card" class="glass status-card">
+      <div class="status-main">
+        <div class="status-info">
+          <div id="status-dot" class="status-dot"></div>
+          <div>
+            <h2 id="status-text">نامشخص</h2>
+            <p id="status-sub">در حال اتصال...</p>
+          </div>
+        </div>
+        <button id="toggle-btn" class="toggle-btn glass">
+          <i class="fas fa-power-off"></i> <span>روشن کردن سلف</span>
+        </button>
+      </div>
     </div>
 
-    <nav class="tabs">
-      <button class="tab active" data-tab="main">🏠 اصلی</button>
-      <button class="tab" data-tab="time">⏰ ساعت</button>
-      <button class="tab" data-tab="date">📅 تاریخ</button>
-      <button class="tab" data-tab="action">🎭 اکشن</button>
-      <button class="tab" data-tab="account">👤 حساب</button>
-    </nav>
-
-    <div id="main" class="tab-content active">
-      <!-- محتوا با JS لود میشه -->
+    <!-- Tabs -->
+    <div class="tabs glass">
+      <button class="tab active" data-tab="main"><i class="fas fa-home"></i><span>خانه</span></button>
+      <button class="tab" data-tab="time"><i class="fas fa-clock"></i><span>ساعت</span></button>
+      <button class="tab" data-tab="date"><i class="fas fa-calendar-alt"></i><span>تاریخ</span></button>
+      <button class="tab" data-tab="action"><i class="fas fa-bolt"></i><span>اکشن</span></button>
+      <button class="tab" data-tab="account"><i class="fas fa-wallet"></i><span>حساب</span></button>
     </div>
 
+    <!-- Contents -->
+    <div id="main" class="tab-content active"></div>
     <div id="time" class="tab-content"></div>
     <div id="date" class="tab-content"></div>
     <div id="action" class="tab-content"></div>
