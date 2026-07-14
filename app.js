@@ -2,41 +2,40 @@ const tg = window.Telegram.WebApp;
 tg.expand();
 tg.ready();
 
+const API_BASE = "https://your-bot-domain.onrender.com"; // یا آدرس Railway
+
 let userId = tg.initDataUnsafe.user?.id;
-let currentUser = {};
 
-// ارسال داده به ربات
-function sendToBot(data) {
-  tg.sendData(JSON.stringify(data));
+async function fetchUserData() {
+  try {
+    const res = await fetch(`${API_BASE}/api/user?user_id=${userId}`);
+    const data = await res.json();
+
+    if (data.error) throw new Error(data.error);
+
+    // بروزرسانی وضعیت
+    document.getElementById('status-text').textContent = data.status ? 'فعال' : 'خاموش';
+    document.getElementById('status-sub').textContent = data.status ? 'سلف در حال اجراست' : 'سلف خاموش است';
+
+    // دکمه
+    const btn = document.getElementById('toggle-btn');
+    btn.textContent = data.status ? 'خاموش کردن سلف' : 'روشن کردن سلف';
+    btn.style.background = data.status ? 
+      'linear-gradient(90deg, #ff3b5c, #ff6b6b)' : 
+      'linear-gradient(90deg, #00ff9d, #00cc77)';
+
+  } catch (e) {
+    console.error(e);
+  }
 }
 
-// دریافت داده از ربات (وقتی ربات پیام بفرسته)
-tg.onEvent('viewportChanged', () => {});
-tg.onEvent('mainButtonClicked', () => {});
-
-// لود اطلاعات اولیه
-async function loadUser() {
-  // اینجا می‌تونی از API رباتت اطلاعات بگیری (با fetch به webhook)
-  document.getElementById('user-info').innerHTML = `
-    سلام <b>${tg.initDataUnsafe.user?.first_name || 'کاربر'}</b>
-  `;
+// ارسال دستور به ربات
+function sendAction(action) {
+  tg.sendData(JSON.stringify({ action: action }));
 }
 
-// مثال: تغییر وضعیت
-document.getElementById('toggle-btn').addEventListener('click', () => {
-  sendToBot({ action: 'toggle_status' });
+// لود اولیه
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('greeting').textContent = `سلام ${tg.initDataUnsafe.user?.first_name || ''} 👋`;
+  fetchUserData();
 });
-
-// تب‌ها
-document.querySelectorAll('.tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    tab.classList.add('active');
-    
-    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-    document.getElementById(tab.dataset.tab).classList.add('active');
-  });
-});
-
-// راه‌اندازی اولیه
-loadUser();
