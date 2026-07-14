@@ -2,12 +2,12 @@
 <html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>NovaSelfManagerBot — مدیریت هوشمند سلف تلگرام</title>
   <meta name="description" content="NovaSelfManagerBot سلف تلگرام شما را با ساعت زنده، اکشن‌های آنلاین، منشی خودکار و اقتصاد الماس شفاف هوشمند می‌کند." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     * {
       margin: 0;
@@ -16,24 +16,21 @@
     }
     :root {
       --bg: #0a0b1a;
-      --surface: rgba(18, 21, 43, 0.5);
-      --border: rgba(255, 255, 255, 0.08);
       --purple: #7c5cfc;
       --cyan: #5eead4;
       --text: #eaeef7;
       --muted: #8b8fab;
-      --radius: 20px;
+      --radius: 18px;
     }
-    html {
-      scroll-behavior: smooth;
-    }
+    html,
     body {
+      width: 100%;
+      min-height: 100vh;
       background: var(--bg);
       color: var(--text);
       font-family: 'Vazirmatn', sans-serif;
-      line-height: 1.7;
+      line-height: 1.6;
       overflow-x: hidden;
-      min-height: 100vh;
       position: relative;
     }
 
@@ -48,20 +45,19 @@
       pointer-events: none;
     }
 
-    /* ===== همه محتوا وسط‌چین ===== */
+    /* ===== همه محتوا ===== */
     .container {
       max-width: 1100px;
       margin: 0 auto;
-      padding: 0 24px;
+      padding: 0 16px;
       position: relative;
       z-index: 1;
       text-align: center;
     }
 
-    /* ===== متن‌های انگلیسی ===== */
+    /* ===== فونت‌های انگلیسی ===== */
     .en,
-    .num,
-    .mono {
+    .num {
       font-family: 'Inter', 'JetBrains Mono', sans-serif;
       direction: ltr;
       display: inline-block;
@@ -69,55 +65,60 @@
     .num {
       font-family: 'JetBrains Mono', monospace;
       font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+    .logo-text {
+      font-family: 'Inter', 'Vazirmatn', sans-serif;
+      font-weight: 700;
+      letter-spacing: -0.3px;
     }
 
     /* ===== EYEBROW ===== */
     .eyebrow {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
+      font-size: 11px;
       letter-spacing: 0.06em;
       color: var(--cyan);
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       text-transform: uppercase;
       justify-content: center;
     }
     .eyebrow::before {
       content: '';
-      width: 8px;
-      height: 8px;
+      width: 6px;
+      height: 6px;
       background: var(--cyan);
       border-radius: 50%;
-      box-shadow: 0 0 20px var(--cyan);
+      box-shadow: 0 0 16px var(--cyan);
     }
 
-    /* ===== دکمه‌ها ===== */
+    /* ===== دکمه‌ها (لیکوئد گلس آیفون) ===== */
     .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      padding: 16px 34px;
+      gap: 8px;
+      padding: 14px 28px;
       border-radius: 60px;
       font-weight: 600;
-      font-size: 15px;
+      font-size: 14px;
       border: none;
       cursor: pointer;
       transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       font-family: 'Vazirmatn', sans-serif;
       position: relative;
       overflow: hidden;
-      backdrop-filter: blur(40px) saturate(1.8);
-      -webkit-backdrop-filter: blur(40px) saturate(1.8);
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(50px) saturate(2);
+      -webkit-backdrop-filter: blur(50px) saturate(2);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       box-shadow:
         0 4px 24px rgba(0, 0, 0, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.15),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.1);
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-      letter-spacing: 0.3px;
+        inset 0 1px 0 rgba(255, 255, 255, 0.12),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.08);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
     }
     .btn::before {
       content: '';
@@ -125,7 +126,7 @@
       inset: 0;
       border-radius: 60px;
       padding: 1px;
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.02));
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.02));
       -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
       mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
       -webkit-mask-composite: xor;
@@ -139,8 +140,8 @@
       left: -50%;
       width: 200%;
       height: 200%;
-      background: conic-gradient(from 0deg, transparent, rgba(255, 255, 255, 0.03), transparent 60%);
-      animation: rotateGlow 8s linear infinite;
+      background: conic-gradient(from 0deg, transparent, rgba(255, 255, 255, 0.04), transparent 60%);
+      animation: rotateGlow 10s linear infinite;
       pointer-events: none;
       opacity: 0;
       transition: opacity 0.6s ease;
@@ -157,39 +158,34 @@
       }
     }
     .btn-primary {
-      background: linear-gradient(135deg, rgba(124, 92, 252, 0.25), rgba(94, 234, 212, 0.15));
-      border: 1px solid rgba(124, 92, 252, 0.25);
+      background: linear-gradient(135deg, rgba(124, 92, 252, 0.2), rgba(94, 234, 212, 0.1));
+      border: 1px solid rgba(124, 92, 252, 0.2);
       box-shadow:
-        0 8px 32px -8px rgba(124, 92, 252, 0.25),
-        inset 0 1px 0 rgba(255, 255, 255, 0.18),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+        0 8px 32px -8px rgba(124, 92, 252, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.08);
       color: #fff;
     }
     .btn-primary:hover {
-      transform: translateY(-4px) scale(1.02);
+      transform: translateY(-3px) scale(1.02);
       box-shadow:
-        0 16px 48px -8px rgba(124, 92, 252, 0.45),
-        inset 0 1px 0 rgba(255, 255, 255, 0.25),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.1);
-      border-color: rgba(124, 92, 252, 0.45);
-      background: linear-gradient(135deg, rgba(124, 92, 252, 0.35), rgba(94, 234, 212, 0.2));
+        0 16px 48px -8px rgba(124, 92, 252, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.08);
+      border-color: rgba(124, 92, 252, 0.35);
     }
     .btn-ghost {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
       box-shadow:
-        0 4px 16px rgba(0, 0, 0, 0.15),
-        inset 0 1px 0 rgba(255, 255, 255, 0.08),
+        0 4px 16px rgba(0, 0, 0, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06),
         inset 0 -1px 0 rgba(0, 0, 0, 0.05);
     }
     .btn-ghost:hover {
-      transform: translateY(-4px);
-      border-color: rgba(94, 234, 212, 0.25);
-      background: rgba(94, 234, 212, 0.06);
-      box-shadow:
-        0 12px 40px rgba(0, 0, 0, 0.25),
-        inset 0 1px 0 rgba(255, 255, 255, 0.12),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.05);
+      transform: translateY(-3px);
+      border-color: rgba(94, 234, 212, 0.2);
+      background: rgba(94, 234, 212, 0.05);
     }
 
     /* ===== HEADER ===== */
@@ -197,39 +193,42 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      backdrop-filter: blur(30px) saturate(1.5);
-      -webkit-backdrop-filter: blur(30px) saturate(1.5);
-      background: rgba(10, 11, 26, 0.6);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(30px) saturate(1.6);
+      -webkit-backdrop-filter: blur(30px) saturate(1.6);
+      background: rgba(10, 11, 26, 0.5);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
     }
     nav {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 14px 24px;
+      padding: 12px 16px;
       max-width: 1100px;
       margin: 0 auto;
-      gap: 12px;
+      gap: 8px;
     }
     .logo {
       display: flex;
       align-items: center;
-      gap: 12px;
-      font-weight: 800;
-      font-size: 18px;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 15px;
       flex-shrink: 0;
     }
     .logo svg {
       flex-shrink: 0;
-      filter: drop-shadow(0 0 24px rgba(124, 92, 252, 0.3));
+      filter: drop-shadow(0 0 20px rgba(124, 92, 252, 0.2));
+    }
+    .logo-text {
+      font-size: 14px;
     }
     .nav-links {
       display: flex;
-      gap: 28px;
+      gap: 20px;
       align-items: center;
     }
     .nav-links a {
-      font-size: 14px;
+      font-size: 13px;
       color: var(--muted);
       transition: all 0.3s ease;
       position: relative;
@@ -253,55 +252,81 @@
     .nav-cta {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       flex-shrink: 0;
+    }
+    .nav-cta .btn {
+      padding: 10px 18px;
+      font-size: 12px;
     }
     .burger {
       display: none;
       flex-direction: column;
-      gap: 5px;
+      gap: 4px;
       background: none;
       border: none;
       cursor: pointer;
       padding: 4px;
     }
     .burger span {
-      width: 24px;
-      height: 2.5px;
+      width: 22px;
+      height: 2px;
       background: var(--text);
       border-radius: 4px;
       transition: 0.3s;
     }
+
+    /* ===== منو با انیمیشن ===== */
     #mobileMenu {
       display: none;
       flex-direction: column;
-      padding: 0 24px 20px;
-      gap: 4px;
-      backdrop-filter: blur(20px);
-      background: rgba(10, 11, 26, 0.9);
+      padding: 0 16px 16px;
+      gap: 2px;
+      backdrop-filter: blur(30px) saturate(1.6);
+      -webkit-backdrop-filter: blur(30px) saturate(1.6);
+      background: rgba(10, 11, 26, 0.85);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+      animation: slideDown 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       text-align: center;
+    }
+    #mobileMenu.open {
+      display: flex !important;
+    }
+    @keyframes slideDown {
+      0% {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.96);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
     }
     #mobileMenu a {
       padding: 10px 0;
-      font-size: 15px;
+      font-size: 14px;
       color: var(--muted);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+      transition: all 0.3s ease;
+    }
+    #mobileMenu a:hover {
+      color: var(--text);
     }
 
     /* ===== HERO ===== */
     .hero {
-      padding: 70px 0 50px;
+      padding: 40px 0 30px;
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
-      min-height: 80vh;
+      min-height: 70vh;
       justify-content: center;
     }
     .hero h1 {
-      font-size: clamp(32px, 5vw, 58px);
+      font-size: clamp(26px, 6vw, 50px);
       line-height: 1.15;
-      margin: 16px 0 20px;
+      margin: 12px 0 16px;
     }
     .hero h1 .accent {
       background: linear-gradient(90deg, var(--cyan), var(--purple));
@@ -311,183 +336,195 @@
     }
     .hero p {
       color: var(--muted);
-      font-size: 17px;
-      max-width: 560px;
-      margin: 0 auto 32px;
+      font-size: 15px;
+      max-width: 480px;
+      margin: 0 auto 24px;
+      padding: 0 8px;
     }
     .hero-actions {
       display: flex;
-      gap: 14px;
+      gap: 10px;
       flex-wrap: wrap;
       justify-content: center;
-      margin-bottom: 30px;
+      margin-bottom: 24px;
+    }
+    .hero-actions .btn {
+      padding: 12px 24px;
+      font-size: 13px;
     }
     .hero-meta {
       display: flex;
-      gap: 20px;
+      gap: 12px;
       flex-wrap: wrap;
       justify-content: center;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
+      font-size: 11px;
       color: var(--muted);
     }
     .hero-meta span {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 4px;
       background: rgba(255, 255, 255, 0.03);
-      padding: 4px 14px;
-      border-radius: 20px;
+      padding: 3px 12px;
+      border-radius: 16px;
       border: 1px solid rgba(255, 255, 255, 0.04);
       backdrop-filter: blur(8px);
-    }
-    .hero-meta .en {
-      font-family: 'Inter', sans-serif;
     }
 
     /* ===== TECH STRIP ===== */
     .tech-strip {
-      border-top: 1px solid rgba(255, 255, 255, 0.04);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-      padding: 16px 0;
-      background: rgba(255, 255, 255, 0.015);
+      border-top: 1px solid rgba(255, 255, 255, 0.03);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+      padding: 12px 0;
+      background: rgba(255, 255, 255, 0.01);
       backdrop-filter: blur(12px);
     }
     .tech-strip .container {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 28px;
+      gap: 16px;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 13px;
+      font-size: 11px;
       color: var(--muted);
     }
     .tech-strip strong {
       color: var(--text);
       font-weight: 500;
     }
-    .tech-strip .en {
-      font-family: 'Inter', sans-serif;
-    }
 
     /* ===== SECTIONS ===== */
     section {
-      padding: 80px 0;
+      padding: 50px 0;
       position: relative;
     }
     .section-head {
-      max-width: 640px;
-      margin: 0 auto 48px;
+      max-width: 540px;
+      margin: 0 auto 32px;
       text-align: center;
     }
     .section-head h2 {
-      font-size: clamp(24px, 3.2vw, 36px);
-      margin-top: 12px;
+      font-size: clamp(20px, 4vw, 30px);
+      margin-top: 8px;
     }
     .section-head p {
       color: var(--muted);
-      margin-top: 12px;
+      margin-top: 8px;
+      font-size: 14px;
     }
+
+    /* ===== انیمیشن ریویل ===== */
     .reveal {
       opacity: 0;
-      transform: translateY(40px);
-      transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      transform: translateY(30px) scale(0.97);
+      transition: opacity 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
     .reveal.in-view {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateY(0) scale(1);
+    }
+    .reveal-delay-1 {
+      transition-delay: 0.1s;
+    }
+    .reveal-delay-2 {
+      transition-delay: 0.2s;
+    }
+    .reveal-delay-3 {
+      transition-delay: 0.3s;
     }
 
     /* ===== FEATURES ===== */
     .features-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-      max-width: 1000px;
+      gap: 14px;
+      max-width: 960px;
       margin: 0 auto;
     }
     .feature-card {
       background: rgba(255, 255, 255, 0.03);
       backdrop-filter: blur(20px) saturate(1.4);
       -webkit-backdrop-filter: blur(20px) saturate(1.4);
-      border: 1px solid rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.05);
       border-radius: var(--radius);
-      padding: 28px 24px;
+      padding: 20px 16px;
       transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       box-shadow:
-        0 8px 32px rgba(0, 0, 0, 0.15),
-        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        0 4px 24px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
       text-align: center;
     }
     .feature-card:hover {
-      transform: translateY(-8px) scale(1.02);
-      border-color: rgba(124, 92, 252, 0.25);
-      box-shadow:
-        0 16px 48px rgba(0, 0, 0, 0.25),
-        inset 0 1px 0 rgba(255, 255, 255, 0.08);
-      background: rgba(255, 255, 255, 0.05);
+      transform: translateY(-4px);
+      border-color: rgba(124, 92, 252, 0.15);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
     }
     .feature-icon {
-      width: 52px;
-      height: 52px;
-      border-radius: 16px;
-      background: rgba(124, 92, 252, 0.1);
-      border: 1px solid rgba(124, 92, 252, 0.15);
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: rgba(124, 92, 252, 0.08);
+      border: 1px solid rgba(124, 92, 252, 0.1);
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0 auto 18px;
+      margin: 0 auto 12px;
       backdrop-filter: blur(8px);
     }
+    .feature-icon svg {
+      width: 20px;
+      height: 20px;
+    }
     .feature-card h3 {
-      font-size: 17px;
-      margin-bottom: 8px;
+      font-size: 15px;
+      margin-bottom: 4px;
     }
     .feature-card p {
       color: var(--muted);
-      font-size: 14px;
+      font-size: 13px;
+      line-height: 1.5;
     }
 
     /* ===== STEPS ===== */
     .steps {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-      max-width: 1000px;
+      gap: 12px;
+      max-width: 960px;
       margin: 0 auto;
     }
     .step {
       background: rgba(255, 255, 255, 0.03);
       backdrop-filter: blur(16px) saturate(1.3);
       -webkit-backdrop-filter: blur(16px) saturate(1.3);
-      padding: 24px 20px;
+      padding: 18px 14px;
       border-radius: var(--radius);
-      border: 1px solid rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.05);
       transition: all 0.3s ease;
-      box-shadow:
-        0 4px 24px rgba(0, 0, 0, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
       text-align: center;
     }
     .step:hover {
-      transform: translateY(-4px);
-      border-color: rgba(124, 92, 252, 0.2);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      transform: translateY(-3px);
+      border-color: rgba(124, 92, 252, 0.12);
     }
     .step-num {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 13px;
+      font-size: 12px;
       color: var(--cyan);
       display: block;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
     }
     .step h3 {
-      font-size: 16px;
-      margin-bottom: 6px;
+      font-size: 14px;
+      margin-bottom: 4px;
     }
     .step p {
       color: var(--muted);
-      font-size: 14px;
+      font-size: 13px;
+      line-height: 1.4;
     }
 
     /* ===== ECONOMY ===== */
@@ -495,93 +532,88 @@
       background: rgba(255, 255, 255, 0.03);
       backdrop-filter: blur(24px) saturate(1.5);
       -webkit-backdrop-filter: blur(24px) saturate(1.5);
-      border: 1px solid rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.05);
       border-radius: 24px;
-      padding: 48px 52px;
+      padding: 32px 24px;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 48px;
+      gap: 32px;
       align-items: center;
-      max-width: 1000px;
+      max-width: 960px;
       margin: 0 auto;
-      box-shadow:
-        0 8px 40px rgba(0, 0, 0, 0.15),
-        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     }
     .economy-copy {
       text-align: center;
     }
     .economy-copy h2 {
-      font-size: clamp(22px, 2.8vw, 32px);
-      margin-bottom: 14px;
+      font-size: clamp(18px, 3vw, 26px);
+      margin-bottom: 10px;
     }
     .economy-copy p {
       color: var(--muted);
-      margin-bottom: 18px;
+      margin-bottom: 14px;
+      font-size: 14px;
     }
     .economy-list {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
       text-align: right;
     }
     .economy-list li {
       display: flex;
-      gap: 12px;
+      gap: 10px;
       align-items: flex-start;
-      font-size: 14.5px;
+      font-size: 13px;
       background: rgba(255, 255, 255, 0.02);
-      padding: 8px 14px;
-      border-radius: 12px;
+      padding: 6px 12px;
+      border-radius: 10px;
       border: 1px solid rgba(255, 255, 255, 0.03);
     }
     .economy-list li::before {
       content: '◆';
       color: var(--cyan);
-      font-size: 12px;
-      margin-top: 4px;
-    }
-    .economy-list .en,
-    .economy-list .num {
-      font-family: 'Inter', 'JetBrains Mono', sans-serif;
+      font-size: 10px;
+      margin-top: 3px;
     }
     .meter-card {
-      background: rgba(10, 11, 26, 0.4);
+      background: rgba(10, 11, 26, 0.3);
       backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.05);
       border-radius: 16px;
-      padding: 28px;
+      padding: 20px;
     }
     .meter-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 18px;
+      margin-bottom: 14px;
     }
     .meter-row .label {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
+      font-size: 11px;
       color: var(--muted);
     }
     .meter-row .value {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 24px;
+      font-size: 20px;
       color: var(--cyan);
       font-weight: 700;
     }
     .meter-bar {
-      height: 8px;
+      height: 6px;
       background: rgba(255, 255, 255, 0.06);
-      border-radius: 8px;
+      border-radius: 6px;
       overflow: hidden;
-      margin-bottom: 24px;
+      margin-bottom: 18px;
     }
     .meter-fill {
       height: 100%;
       width: 64%;
       background: linear-gradient(90deg, var(--purple), var(--cyan));
-      border-radius: 8px;
-      box-shadow: 0 0 30px rgba(94, 234, 212, 0.25);
+      border-radius: 6px;
+      box-shadow: 0 0 24px rgba(94, 234, 212, 0.2);
       animation: shimmer 2.5s infinite;
     }
     @keyframes shimmer {
@@ -590,34 +622,34 @@
         opacity: 1;
       }
       50% {
-        opacity: 0.6;
+        opacity: 0.5;
       }
     }
     .meter-sessions {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
     }
     .meter-sessions .row {
       display: flex;
       justify-content: space-between;
-      padding: 10px 14px;
+      padding: 8px 12px;
       background: rgba(255, 255, 255, 0.02);
       border: 1px solid rgba(255, 255, 255, 0.04);
-      border-radius: 12px;
+      border-radius: 10px;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
+      font-size: 11px;
       color: var(--muted);
     }
     .row .name {
       color: var(--text);
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
     }
     .status-dot {
-      width: 7px;
-      height: 7px;
+      width: 6px;
+      height: 6px;
       border-radius: 50%;
       background: var(--cyan);
       animation: pulse-dot 2s infinite;
@@ -629,8 +661,8 @@
         box-shadow: 0 0 0 0 rgba(94, 234, 212, 0.4);
       }
       50% {
-        opacity: 0.5;
-        box-shadow: 0 0 0 8px rgba(94, 234, 212, 0);
+        opacity: 0.4;
+        box-shadow: 0 0 0 6px rgba(94, 234, 212, 0);
       }
     }
 
@@ -638,92 +670,94 @@
     .chip-groups {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-      max-width: 1000px;
+      gap: 14px;
+      max-width: 960px;
       margin: 0 auto;
     }
     .chip-group {
       background: rgba(255, 255, 255, 0.03);
       backdrop-filter: blur(16px) saturate(1.3);
       -webkit-backdrop-filter: blur(16px) saturate(1.3);
-      border: 1px solid rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.05);
       border-radius: var(--radius);
-      padding: 24px;
-      box-shadow:
-        0 4px 24px rgba(0, 0, 0, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      padding: 18px 14px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
       transition: all 0.3s ease;
       text-align: center;
     }
     .chip-group:hover {
-      transform: translateY(-4px);
-      border-color: rgba(124, 92, 252, 0.15);
+      transform: translateY(-3px);
+      border-color: rgba(124, 92, 252, 0.1);
     }
     .chip-group h3 {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
+      font-size: 11px;
       color: var(--cyan);
       letter-spacing: 0.03em;
-      margin-bottom: 16px;
+      margin-bottom: 12px;
       font-weight: 500;
       text-transform: uppercase;
     }
     .chips {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 6px;
       justify-content: center;
     }
     .chip {
       background: rgba(255, 255, 255, 0.04);
       backdrop-filter: blur(8px);
-      border: 1px solid rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.05);
       border-radius: 40px;
-      padding: 6px 16px;
-      font-size: 13px;
+      padding: 4px 14px;
+      font-size: 12px;
       color: var(--text);
       transition: all 0.3s ease;
     }
     .chip:hover {
       border-color: var(--purple);
-      transform: translateY(-2px) scale(1.05);
-      background: rgba(124, 92, 252, 0.08);
-      box-shadow: 0 4px 20px rgba(124, 92, 252, 0.15);
+      transform: translateY(-2px);
+      background: rgba(124, 92, 252, 0.06);
     }
     .chip-mono {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
+      font-size: 11px;
       color: var(--cyan);
-      border-color: rgba(94, 234, 212, 0.15);
+      border-color: rgba(94, 234, 212, 0.1);
     }
 
     /* ===== CTA ===== */
     .cta-section {
       text-align: center;
-      border-top: 1px solid rgba(255, 255, 255, 0.04);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-      background: linear-gradient(180deg, rgba(18, 21, 43, 0.4), rgba(10, 11, 26, 0.6));
+      border-top: 1px solid rgba(255, 255, 255, 0.03);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+      background: linear-gradient(180deg, rgba(18, 21, 43, 0.3), rgba(10, 11, 26, 0.5));
       backdrop-filter: blur(16px);
     }
     .cta-section h2 {
-      font-size: clamp(26px, 3.6vw, 40px);
-      margin: 16px 0 14px;
+      font-size: clamp(22px, 4vw, 34px);
+      margin: 12px 0 10px;
     }
     .cta-section p {
       color: var(--muted);
-      max-width: 460px;
-      margin: 0 auto 34px;
+      max-width: 400px;
+      margin: 0 auto 24px;
+      font-size: 14px;
     }
     .cta-buttons {
       display: flex;
       justify-content: center;
-      gap: 14px;
+      gap: 10px;
       flex-wrap: wrap;
+    }
+    .cta-buttons .btn {
+      padding: 12px 24px;
+      font-size: 13px;
     }
 
     /* ===== FOOTER ===== */
     footer {
-      padding: 48px 0 32px;
+      padding: 32px 0 20px;
       border-top: 1px solid rgba(255, 255, 255, 0.03);
     }
     .footer-grid {
@@ -731,19 +765,19 @@
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 20px;
-      border-top: 1px solid rgba(255, 255, 255, 0.04);
-      padding-top: 28px;
+      gap: 14px;
+      border-top: 1px solid rgba(255, 255, 255, 0.03);
+      padding-top: 20px;
       max-width: 1100px;
       margin: 0 auto;
-      padding-left: 24px;
-      padding-right: 24px;
+      padding-left: 16px;
+      padding-right: 16px;
     }
     .footer-links {
       display: flex;
-      gap: 24px;
+      gap: 16px;
       flex-wrap: wrap;
-      font-size: 13px;
+      font-size: 12px;
       color: var(--muted);
     }
     .footer-links a:hover {
@@ -751,7 +785,7 @@
     }
     .footer-copy {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
+      font-size: 11px;
       color: var(--muted);
     }
 
@@ -765,55 +799,135 @@
       }
       .features-grid {
         grid-template-columns: 1fr 1fr;
+        gap: 12px;
       }
       .steps {
         grid-template-columns: 1fr 1fr;
+        gap: 10px;
       }
       .economy {
         grid-template-columns: 1fr;
-        padding: 32px 24px;
+        padding: 24px 18px;
+        gap: 20px;
       }
       .chip-groups {
-        grid-template-columns: 1fr;
-      }
-      .nav-cta .btn {
-        padding: 10px 18px;
-        font-size: 13px;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
       }
       .hero {
         min-height: auto;
-        padding: 40px 0 30px;
+        padding: 30px 0 20px;
+      }
+      .hero h1 {
+        font-size: clamp(22px, 5vw, 32px);
+      }
+      .hero p {
+        font-size: 14px;
+      }
+      section {
+        padding: 30px 0;
       }
     }
     @media (max-width: 560px) {
       .features-grid {
         grid-template-columns: 1fr;
+        gap: 10px;
       }
       .steps {
         grid-template-columns: 1fr;
+        gap: 8px;
       }
-      section {
-        padding: 50px 0;
+      .chip-groups {
+        grid-template-columns: 1fr;
+        gap: 10px;
       }
       .economy {
-        padding: 20px 16px;
+        padding: 16px 12px;
+        border-radius: 16px;
       }
       .meter-card {
-        padding: 18px;
+        padding: 14px;
+      }
+      .hero-actions .btn {
+        padding: 10px 18px;
+        font-size: 12px;
       }
       .nav-cta .btn {
         padding: 8px 14px;
+        font-size: 11px;
+      }
+      .logo-text {
         font-size: 12px;
       }
-      .hero-actions .btn {
-        padding: 12px 22px;
+      .logo svg {
+        width: 32px;
+        height: 32px;
+      }
+      .hero-meta {
+        font-size: 10px;
+        gap: 8px;
+      }
+      .hero-meta span {
+        padding: 2px 10px;
+      }
+      .footer-grid {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+      }
+      .footer-links {
+        justify-content: center;
+      }
+      .step {
+        padding: 14px 12px;
+      }
+      .step h3 {
         font-size: 13px;
+      }
+      .step p {
+        font-size: 12px;
+      }
+      .feature-card {
+        padding: 16px 14px;
+      }
+      .feature-card h3 {
+        font-size: 14px;
+      }
+      .feature-card p {
+        font-size: 12px;
+      }
+      .chip-group {
+        padding: 14px 12px;
+      }
+      .chip {
+        font-size: 11px;
+        padding: 3px 12px;
+      }
+      .section-head h2 {
+        font-size: 18px;
+      }
+      .section-head p {
+        font-size: 13px;
+      }
+      .cta-section h2 {
+        font-size: 20px;
+      }
+      .cta-buttons .btn {
+        padding: 10px 18px;
+        font-size: 12px;
       }
     }
     @media (prefers-reduced-motion: reduce) {
       * {
         animation-duration: 0.001ms !important;
         transition-duration: 0.001ms !important;
+      }
+      #mobileMenu {
+        animation: none !important;
+      }
+      .reveal {
+        opacity: 1 !important;
+        transform: none !important;
       }
     }
   </style>
@@ -826,7 +940,7 @@
   <header>
     <nav>
       <div class="logo">
-        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width="36" height="36" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect width="40" height="40" rx="12" fill="url(#logoGrad)" />
           <path d="M20 6L30 16L20 34L10 16L20 6Z" fill="#0b0d17" opacity="0.85" />
           <path d="M20 12L25 18L20 28L15 18L20 12Z" fill="#5eead4" />
@@ -838,7 +952,7 @@
             </linearGradient>
           </defs>
         </svg>
-        <span class="en">NovaSelfManagerBot</span>
+        <span class="logo-text en">NovaSelfManagerBot</span>
       </div>
 
       <ul class="nav-links">
@@ -850,11 +964,11 @@
 
       <div class="nav-cta">
         <a class="btn btn-primary" href="https://t.me/NovaSelfManagerBot" target="_blank" rel="noopener">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M21.5 4.5L2.5 10.5L9.5 14.5L13.5 21.5L21.5 4.5Z" />
             <path d="M9.5 14.5L13.5 21.5L21.5 4.5L9.5 14.5Z" />
           </svg>
-          <span>شروع در تلگرام</span>
+          <span>شروع</span>
         </a>
         <button class="burger" id="burger"><span></span><span></span><span></span></button>
       </div>
@@ -864,6 +978,7 @@
       <a href="#how">نحوه‌ی کار</a>
       <a href="#economy">اقتصاد</a>
       <a href="#customize">سفارشی‌سازی</a>
+      <a href="https://t.me/NovaSelfManagerBot" target="_blank" rel="noopener">تلگرام</a>
     </div>
   </header>
 
@@ -876,7 +991,7 @@
         <p>NovaSelfManagerBot با اتصال سشن تلگرام، ساعت زنده، اکشن‌های آنلاین، منشی خودکار و حالت‌های متن حرفه‌ای رو برات فعال می‌کنه. با اقتصاد الماس شفاف.</p>
         <div class="hero-actions">
           <a class="btn btn-primary" href="https://t.me/NovaSelfManagerBot" target="_blank" rel="noopener">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M21.5 4.5L2.5 10.5L9.5 14.5L13.5 21.5L21.5 4.5Z" />
               <path d="M9.5 14.5L13.5 21.5L21.5 4.5L9.5 14.5Z" />
             </svg>
@@ -910,44 +1025,44 @@
           <p>از اتصال سشن تا صورتحساب الماس، همه در یک پنل.</p>
         </div>
         <div class="features-grid">
-          <div class="feature-card reveal">
+          <div class="feature-card reveal reveal-delay-1">
             <div class="feature-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7c5cfc" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2" stroke="#7c5cfc"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="#7c5cfc" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2" stroke="#7c5cfc"/></svg>
             </div>
             <h3>ساعت و تاریخ زنده</h3>
             <p>ساعت یا تاریخ (میلادی، شمسی، قمری) رو با فونت دلخواه لحظه‌به‌لحظه در نام یا بیو نمایش بده.</p>
           </div>
-          <div class="feature-card reveal">
+          <div class="feature-card reveal reveal-delay-2">
             <div class="feature-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7c5cfc" stroke-width="1.8"><circle cx="12" cy="12" r="3.5"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="#7c5cfc" stroke-width="1.8"><circle cx="12" cy="12" r="3.5"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg>
             </div>
             <h3>اکشن‌های آنلاین</h3>
             <p>تایپینگ، ضبط صدا، آپلود عکس و ویدیو و … رو خودکار نشون بده تا همیشه فعال دیده شی.</p>
           </div>
-          <div class="feature-card reveal">
+          <div class="feature-card reveal reveal-delay-3">
             <div class="feature-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5eead4" stroke-width="1.8"><path d="M5 5h14v10H9l-4 4V5z"/><path d="M8.5 9.5h7M8.5 12.5h4"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="#5eead4" stroke-width="1.8"><path d="M5 5h14v10H9l-4 4V5z"/><path d="M8.5 9.5h7M8.5 12.5h4"/></svg>
             </div>
             <h3>حالت‌های متن</h3>
             <p>پیام‌ها رو با نقل‌قول، بولد، زیرخط، اسپویلر، خط‌خورده یا افکت تدریجی بفرست.</p>
           </div>
-          <div class="feature-card reveal">
+          <div class="feature-card reveal reveal-delay-1">
             <div class="feature-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7c5cfc" stroke-width="1.8"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M4 19c0-3 2.5-5 5-5s5 2 5 5M14.5 19c.2-2.2 1.6-3.8 3.5-4.3"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="#7c5cfc" stroke-width="1.8"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M4 19c0-3 2.5-5 5-5s5 2 5 5M14.5 19c.2-2.2 1.6-3.8 3.5-4.3"/></svg>
             </div>
             <h3>تگ گروهی</h3>
             <p>با یه دستور ساده، همه اعضا یا فقط ادمین‌های گروه رو منشن کن.</p>
           </div>
-          <div class="feature-card reveal">
+          <div class="feature-card reveal reveal-delay-2">
             <div class="feature-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5eead4" stroke-width="1.8"><rect x="4" y="7" width="16" height="12" rx="2"/><path d="M4 9l8 6 8-6"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="#5eead4" stroke-width="1.8"><rect x="4" y="7" width="16" height="12" rx="2"/><path d="M4 9l8 6 8-6"/></svg>
             </div>
             <h3>منشی خودکار</h3>
             <p>به اولین پیام خصوصی هرکس، با تأخیر دلخواه، پاسخ خودکار بفرست.</p>
           </div>
-          <div class="feature-card reveal">
+          <div class="feature-card reveal reveal-delay-3">
             <div class="feature-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7c5cfc" stroke-width="1.8"><path d="M12 2L4 9l8 13 8-13-8-7z"/><path d="M4 9h16M9 9l3 13 3-13"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="#7c5cfc" stroke-width="1.8"><path d="M12 2L4 9l8 13 8-13-8-7z"/><path d="M4 9h16M9 9l3 13 3-13"/></svg>
             </div>
             <h3>الماس و رفرال</h3>
             <p>موجودی الماس، انتقال بین کاربران و سیستم رفرال، همه از داخل حساب.</p>
@@ -964,22 +1079,22 @@
           <h2>چهار قدم تا راه‌اندازی</h2>
         </div>
         <div class="steps">
-          <div class="step reveal">
+          <div class="step reveal reveal-delay-1">
             <span class="step-num">01</span>
             <h3>سشنت رو وصل کن</h3>
             <p>Session String رو به ربات بدی، سلفت ثبت و فعال میشه.</p>
           </div>
-          <div class="step reveal">
+          <div class="step reveal reveal-delay-2">
             <span class="step-num">02</span>
             <h3>ظاهر رو بچین</h3>
             <p>ساعت، فونت، حالت متن و اکشن‌های آنلاین رو از منو انتخاب کن.</p>
           </div>
-          <div class="step reveal">
+          <div class="step reveal reveal-delay-3">
             <span class="step-num">03</span>
             <h3>منشی و تگ رو فعال کن</h3>
             <p>پاسخ خودکار و تگ گروهی رو یک‌بار تنظیم کن، بقیه خودکاره.</p>
           </div>
-          <div class="step reveal">
+          <div class="step reveal reveal-delay-1">
             <span class="step-num">04</span>
             <h3>با الماس شارژ کن</h3>
             <p>مصرف ساعتی شفافه؛ همیشه می‌دونی موجودیت کی تموم میشه.</p>
@@ -997,8 +1112,8 @@
             <h2>مصرف شفاف، بدون غافلگیری</h2>
             <p>الماس واحد پول داخلی NovaSelfManagerBot هست. تا سلف روشنه، بر اساس ساعت مصرف، الماس کم میشه و تو همیشه می‌دونی موجودیت کی تموم میشه.</p>
             <ul class="economy-list">
-              <li>مصرف ثابت: <span class="num">۵</span> الماس به ازای هر ساعت روشن‌بودن سلف</li>
-              <li>هر الماس <span class="num">۲۰</span> تومان، بدون هزینه پنهان</li>
+              <li>مصرف ثابت: <span class="num">5</span> الماس به ازای هر ساعت روشن‌بودن سلف</li>
+              <li>هر الماس <span class="num">20</span> تومان، بدون هزینه پنهان</li>
               <li>انتقال مستقیم الماس بین کاربران</li>
               <li>دریافت الماس هدیه از طریق سیستم رفرال</li>
             </ul>
@@ -1006,13 +1121,13 @@
           <div class="meter-card">
             <div class="meter-row">
               <span class="label">موجودی الماس</span>
-              <span class="value"><span class="num">۴۲۰</span> ◆</span>
+              <span class="value"><span class="num">420</span> ◆</span>
             </div>
             <div class="meter-bar"><div class="meter-fill"></div></div>
             <div class="meter-sessions">
               <div class="row"><span class="name"><span class="status-dot"></span>وضعیت سلف</span><span>🟢 فعال</span></div>
-              <div class="row"><span class="name"><span class="status-dot"></span>نرخ مصرف</span><span><span class="num">۵</span> الماس / ساعت</span></div>
-              <div class="row"><span class="name"><span class="status-dot"></span>قیمت هر الماس</span><span><span class="num">۲۰</span> تومان</span></div>
+              <div class="row"><span class="name"><span class="status-dot"></span>نرخ مصرف</span><span><span class="num">5</span> الماس / ساعت</span></div>
+              <div class="row"><span class="name"><span class="status-dot"></span>قیمت هر الماس</span><span><span class="num">20</span> تومان</span></div>
             </div>
           </div>
         </div>
@@ -1028,7 +1143,7 @@
           <p>هر بخش از رفتار سلفت رو خودت انتخاب می‌کنی؛ هیچ چیزی تحمیل نمیشه.</p>
         </div>
         <div class="chip-groups reveal">
-          <div class="chip-group">
+          <div class="chip-group reveal reveal-delay-1">
             <h3>حالت‌های متن</h3>
             <div class="chips">
               <span class="chip">نقل قول</span>
@@ -1041,16 +1156,16 @@
               <span class="chip">تک‌فاصله</span>
             </div>
           </div>
-          <div class="chip-group">
+          <div class="chip-group reveal reveal-delay-2">
             <h3>تاریخ و ساعت</h3>
             <div class="chips">
               <span class="chip">میلادی</span>
               <span class="chip">شمسی</span>
               <span class="chip">قمری</span>
-              <span class="chip chip-mono"><span class="num">۱۴</span> فونت</span>
+              <span class="chip chip-mono"><span class="num">14</span> فونت</span>
             </div>
           </div>
-          <div class="chip-group">
+          <div class="chip-group reveal reveal-delay-3">
             <h3>اکشن‌های آنلاین</h3>
             <div class="chips">
               <span class="chip">تایپینگ</span>
@@ -1075,7 +1190,7 @@
         <p>همین حالا وارد ربات بشو، اولین سشن رو وصل کن و پنل رو ببین.</p>
         <div class="cta-buttons">
           <a class="btn btn-primary" href="https://t.me/NovaSelfManagerBot" target="_blank" rel="noopener">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M21.5 4.5L2.5 10.5L9.5 14.5L13.5 21.5L21.5 4.5Z" />
               <path d="M9.5 14.5L13.5 21.5L21.5 4.5L9.5 14.5Z" />
             </svg>
@@ -1090,7 +1205,7 @@
   <footer>
     <div class="footer-grid">
       <div class="logo">
-        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width="32" height="32" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect width="40" height="40" rx="12" fill="url(#footerGrad)" />
           <path d="M20 6L30 16L20 34L10 16L20 6Z" fill="#0b0d17" opacity="0.85" />
           <path d="M20 12L25 18L20 28L15 18L20 12Z" fill="#5eead4" />
@@ -1102,7 +1217,7 @@
             </linearGradient>
           </defs>
         </svg>
-        <span class="en">NovaSelfManagerBot</span>
+        <span class="logo-text en" style="font-size:13px;">NovaSelfManagerBot</span>
       </div>
       <ul class="footer-links">
         <li><a href="#features">امکانات</a></li>
@@ -1115,15 +1230,19 @@
   </footer>
 
   <script>
-    // ===== MOBILE MENU =====
+    // ===== MOBILE MENU با انیمیشن =====
     const burger = document.getElementById('burger');
     const mobileMenu = document.getElementById('mobileMenu');
+
     burger.addEventListener('click', () => {
-      mobileMenu.style.display = mobileMenu.style.display === 'none' ? 'flex' : 'none';
+      mobileMenu.classList.toggle('open');
     });
-    mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-      mobileMenu.style.display = 'none';
-    }));
+
+    mobileMenu.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        mobileMenu.classList.remove('open');
+      });
+    });
 
     // ===== SCROLL REVEAL =====
     const revealEls = document.querySelectorAll('.reveal');
@@ -1134,7 +1253,7 @@
           io.unobserve(e.target);
         }
       });
-    }, { threshold: 0.15 });
+    }, { threshold: 0.12, rootMargin: '0px 0px -30px 0px' });
     revealEls.forEach(el => io.observe(el));
 
     // ===== سیستم ذرات در کل پس‌زمینه =====
@@ -1152,18 +1271,18 @@
     }
 
     function initParticles() {
-      const count = Math.min(180, Math.floor((W * H) / 5000));
+      const count = Math.min(120, Math.floor((W * H) / 6000));
       particles = [];
       for (let i = 0; i < count; i++) {
         particles.push({
           x: Math.random() * W,
           y: Math.random() * H,
-          size: 0.8 + Math.random() * 2.5,
-          speed: 0.15 + Math.random() * 0.4,
-          vx: (Math.random() - 0.5) * 0.2,
-          vy: (Math.random() - 0.5) * 0.2,
-          color: `hsl(${235 + Math.random() * 35}, 65%, ${45 + Math.random() * 35}%)`,
-          opacity: 0.3 + Math.random() * 0.5
+          size: 0.6 + Math.random() * 2,
+          speed: 0.1 + Math.random() * 0.3,
+          vx: (Math.random() - 0.5) * 0.15,
+          vy: (Math.random() - 0.5) * 0.15,
+          color: `hsl(${235 + Math.random() * 35}, 60%, ${40 + Math.random() * 35}%)`,
+          opacity: 0.2 + Math.random() * 0.4
         });
       }
     }
@@ -1180,6 +1299,17 @@
       mouseY = null;
     });
 
+    // گوشی: حرکت لمسی
+    document.addEventListener('touchmove', (e) => {
+      const touch = e.touches[0];
+      mouseX = touch.clientX;
+      mouseY = touch.clientY;
+    }, { passive: true });
+    document.addEventListener('touchend', () => {
+      mouseX = null;
+      mouseY = null;
+    });
+
     let t0 = performance.now();
 
     function frame(now) {
@@ -1192,58 +1322,55 @@
         cy = H / 2;
 
       // Core glow
-      const coreGlow = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.min(W, H) * 0.3);
-      coreGlow.addColorStop(0, 'rgba(124,92,252,0.04)');
-      coreGlow.addColorStop(0.5, 'rgba(94,234,212,0.02)');
+      const coreGlow = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.min(W, H) * 0.25);
+      coreGlow.addColorStop(0, 'rgba(124,92,252,0.03)');
+      coreGlow.addColorStop(0.5, 'rgba(94,234,212,0.015)');
       coreGlow.addColorStop(1, 'rgba(124,92,252,0)');
       ctx.fillStyle = coreGlow;
       ctx.fillRect(0, 0, W, H);
 
       // Core pulse
-      const pulse = 0.7 + 0.3 * Math.sin(now / 2500);
-      ctx.fillStyle = `rgba(124,92,252,${0.06 * pulse})`;
+      const pulse = 0.6 + 0.4 * Math.sin(now / 3000);
+      ctx.fillStyle = `rgba(124,92,252,${0.04 * pulse})`;
       ctx.beginPath();
-      ctx.arc(cx, cy, 12 * pulse, 0, Math.PI * 2);
+      ctx.arc(cx, cy, 10 * pulse, 0, Math.PI * 2);
       ctx.fill();
 
       // Update particles
       particles.forEach((p) => {
-        // Attraction to center
         const dx = cx - p.x;
         const dy = cy - p.y;
         const dist = Math.sqrt(dx * dx + dy * dy) + 0.01;
-        const force = 0.003 * (1 - Math.min(dist / (Math.min(W, H) * 0.35), 1));
+        const force = 0.002 * (1 - Math.min(dist / (Math.min(W, H) * 0.3), 1));
 
-        p.vx += dx * force * 0.3;
-        p.vy += dy * force * 0.3;
+        p.vx += dx * force * 0.25;
+        p.vy += dy * force * 0.25;
 
-        // Mouse repel
         if (mouseX !== null && mouseY !== null) {
           const mdx = p.x - mouseX;
           const mdy = p.y - mouseY;
           const mdist = Math.sqrt(mdx * mdx + mdy * mdy);
-          if (mdist < 120) {
-            const repel = (120 - mdist) / 120 * 0.04;
+          if (mdist < 100) {
+            const repel = (100 - mdist) / 100 * 0.035;
             p.vx += (p.x - mouseX) * repel;
             p.vy += (p.y - mouseY) * repel;
           }
         }
 
-        p.vx *= 0.985;
-        p.vy *= 0.985;
-        p.x += p.vx + (Math.random() - 0.5) * 0.04;
-        p.y += p.vy + (Math.random() - 0.5) * 0.04;
+        p.vx *= 0.982;
+        p.vy *= 0.982;
+        p.x += p.vx + (Math.random() - 0.5) * 0.03;
+        p.y += p.vy + (Math.random() - 0.5) * 0.03;
 
         if (p.x < -10) p.x = W + 10;
         if (p.x > W + 10) p.x = -10;
         if (p.y < -10) p.y = H + 10;
         if (p.y > H + 10) p.y = -10;
 
-        // Draw particle
         ctx.fillStyle = p.color;
         ctx.globalAlpha = p.opacity;
-        ctx.shadowColor = 'rgba(124,92,252,0.15)';
-        ctx.shadowBlur = 8;
+        ctx.shadowColor = 'rgba(124,92,252,0.1)';
+        ctx.shadowBlur = 6;
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
         ctx.fill();
@@ -1252,16 +1379,16 @@
       });
 
       // Connections
+      const maxDist = Math.min(W, H) * 0.12;
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[i].x - particles[j].x;
           const dy = particles[i].y - particles[j].y;
           const dist = Math.sqrt(dx * dx + dy * dy);
-          const maxDist = Math.min(W, H) * 0.15;
           if (dist < maxDist) {
-            const alpha = 0.04 * (1 - dist / maxDist);
+            const alpha = 0.03 * (1 - dist / maxDist);
             ctx.strokeStyle = `rgba(124,92,252,${alpha})`;
-            ctx.lineWidth = 0.5;
+            ctx.lineWidth = 0.4;
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
@@ -1276,4 +1403,4 @@
   </script>
 
 </body>
-</html>
+              </html>
