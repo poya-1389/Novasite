@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NovaSelfManagerBot — مدیریت هوشمند سشن‌های تلگرام</title>
+<meta name="description" content="NovaSelfManagerBot سلف تلگرام شما را با ساعت زنده، اکشن‌های آنلاین، منشی خودکار و حالت‌های متن حرفه‌ای هوشمند می‌کند؛ با یک اقتصاد الماس شفاف.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0A0B14;
+    --surface:#13152A;
+    --surface-2:#191C38;
+    --line:#262A4C;
+    --violet:#7C5CFC;
+    --violet-dim:#4B3AA6;
+    --diamond:#5EEAD4;
+    --diamond-dim:#2C9C8C;
+    --text:#EDEEF7;
+    --muted:#8D91B0;
+    --danger:#FF6B6B;
+    --radius:18px;
+    --font-display:'Vazirmatn', sans-serif;
+    --font-mono:'JetBrains Mono', monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--font-display);
+    line-height:1.7;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  body::before{
+    content:'';
+    position:fixed;
+    inset:0;
+    background:
+      radial-gradient(ellipse 900px 500px at 15% -5%, rgba(124,92,252,0.16), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 100% 10%, rgba(94,234,212,0.10), transparent 60%);
+    pointer-events:none;
+    z-index:0;
+  }
+  a{color:inherit;text-decoration:none;}
+  ul{list-style:none;}
+  img,svg{display:block;max-width:100%;}
+  .container{max-width:1180px;margin:0 auto;padding:0 24px;}
+  .eyebrow{
+    font-family:var(--font-mono);
+    font-size:12.5px;
+    letter-spacing:0.06em;
+    color:var(--diamond);
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    text-transform:uppercase;
+  }
+  .eyebrow::before{
+    content:'';
+    width:7px;height:7px;border-radius:50%;
+    background:var(--diamond);
+    box-shadow:0 0 10px var(--diamond);
+  }
+  h1,h2,h3{font-weight:800;letter-spacing:-0.01em;}
+  .muted{color:var(--muted);}
+
+  /* ---------- NAV ---------- */
+  header{
+    position:sticky;top:0;z-index:100;
+    backdrop-filter:blur(14px);
+    background:rgba(10,11,20,0.72);
+    border-bottom:1px solid var(--line);
+  }
+  nav{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:16px 24px;max-width:1180px;margin:0 auto;
+  }
+  .logo{
+    display:flex;align-items:center;gap:10px;
+    font-weight:800;font-size:17px;
+  }
+  .logo-mark{
+    width:32px;height:32px;border-radius:9px;
+    background:linear-gradient(135deg, var(--violet), var(--diamond));
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--font-mono);font-weight:700;font-size:14px;color:#0A0B14;
+    flex-shrink:0;
+  }
+  .nav-links{display:flex;gap:32px;align-items:center;}
+  .nav-links a{
+    font-size:14.5px;color:var(--muted);transition:color .2s ease;
+  }
+  .nav-links a:hover{color:var(--text);}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:11px 22px;border-radius:100px;
+    font-family:var(--font-display);font-weight:600;font-size:14.5px;
+    cursor:pointer;border:1px solid transparent;transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
+  }
+  .btn-primary{
+    background:linear-gradient(135deg, var(--violet), #6247D9);
+    color:#fff;
+    box-shadow:0 8px 24px -8px rgba(124,92,252,0.6);
+  }
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 28px -8px rgba(124,92,252,0.75);}
+  .btn-ghost{
+    border-color:var(--line);color:var(--text);background:rgba(255,255,255,0.02);
+  }
+  .btn-ghost:hover{border-color:var(--diamond-dim);background:rgba(94,234,212,0.06);}
+  .nav-cta{display:flex;align-items:center;gap:12px;}
+  .burger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:6px;}
+  .burger span{width:22px;height:2px;background:var(--text);border-radius:2px;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;z-index:1;
+    padding:96px 0 70px;
+    display:grid;grid-template-columns:1.05fr 0.95fr;gap:40px;align-items:center;
+  }
+  .hero h1{
+    font-size:clamp(34px, 4.6vw, 58px);
+    line-height:1.18;
+    margin:18px 0 22px;
+  }
+  .hero h1 .accent{
+    background:linear-gradient(90deg, var(--diamond), var(--violet));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .hero p.lead{
+    font-size:17.5px;color:var(--muted);max-width:520px;margin-bottom:34px;
+  }
+  .hero-ctas{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:36px;}
+  .hero-meta{
+    display:flex;gap:26px;flex-wrap:wrap;
+    font-family:var(--font-mono);font-size:12.5px;color:var(--muted);
+  }
+  .hero-meta span{display:flex;align-items:center;gap:7px;}
+  .hero-meta b{color:var(--text);font-weight:600;}
+  .dot{width:6px;height:6px;border-radius:50%;background:var(--diamond);display:inline-block;}
+
+  .hero-visual{
+    position:relative;
+    aspect-ratio:1/1;
+    display:flex;align-items:center;justify-content:center;
+  }
+  #orbit-canvas{width:100%;height:100%;}
+
+  /* ---------- TECH STRIP ---------- */
+  .tech-strip{
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    padding:22px 0;background:rgba(255,255,255,0.015);
+  }
+  .tech-strip .container{
+    display:flex;align-items:center;justify-content:center;gap:38px;flex-wrap:wrap;
+    font-family:var(--font-mono);font-size:13px;color:var(--muted);letter-spacing:.03em;
+  }
+  .tech-strip strong{color:var(--text);font-weight:500;}
+
+  /* ---------- SECTION SHARED ---------- */
+  section{position:relative;z-index:1;padding:110px 0;}
+  .section-head{max-width:640px;margin-bottom:56px;}
+  .section-head h2{font-size:clamp(26px,3.2vw,38px);margin-top:14px;}
+  .section-head p{color:var(--muted);margin-top:14px;font-size:16px;}
+
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease, transform .7s ease;}
+  .reveal.in-view{opacity:1;transform:translateY(0);}
+
+  /* ---------- FEATURES ---------- */
+  .features-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:20px;
+  }
+  .feature-card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:30px 26px;
+    transition:border-color .25s ease, transform .25s ease, background .25s ease;
+  }
+  .feature-card:hover{
+    border-color:var(--violet-dim);
+    transform:translateY(-4px);
+    background:var(--surface-2);
+  }
+  .feature-icon{
+    width:44px;height:44px;border-radius:12px;
+    display:flex;align-items:center;justify-content:center;
+    background:rgba(124,92,252,0.12);
+    border:1px solid rgba(124,92,252,0.25);
+    margin-bottom:20px;
+  }
+  .feature-card h3{font-size:17.5px;margin-bottom:10px;}
+  .feature-card p{color:var(--muted);font-size:14.5px;}
+
+  /* ---------- HOW IT WORKS ---------- */
+  .steps{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:0;
+    counter-reset:step;
+  }
+  .step{
+    position:relative;padding:0 22px 0 0;
+    border-inline-start:1px solid var(--line);
+    padding-inline-start:24px;
+  }
+  .step:first-child{border-inline-start:none;padding-inline-start:0;}
+  .step-num{
+    font-family:var(--font-mono);font-size:13px;color:var(--diamond);
+    display:block;margin-bottom:16px;
+  }
+  .step h3{font-size:16.5px;margin-bottom:10px;}
+  .step p{color:var(--muted);font-size:14px;}
+
+  /* ---------- ECONOMY ---------- */
+  .economy{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:24px;
+    padding:56px;
+    display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center;
+  }
+  .economy-copy h2{font-size:clamp(24px,3vw,32px);margin-bottom:16px;}
+  .economy-copy p{color:var(--muted);margin-bottom:20px;}
+  .economy-list{display:flex;flex-direction:column;gap:14px;margin-top:24px;}
+  .economy-list li{display:flex;gap:12px;align-items:flex-start;font-size:14.5px;color:var(--text);}
+  .economy-list li::before{
+    content:'◆';color:var(--diamond);font-size:11px;margin-top:5px;flex-shrink:0;
+  }
+  .meter-card{
+    background:var(--bg);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:30px;
+  }
+  .meter-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;}
+  .meter-row .label{font-family:var(--font-mono);font-size:12.5px;color:var(--muted);}
+  .meter-row .value{font-family:var(--font-mono);font-size:22px;color:var(--diamond);font-weight:600;}
+  .meter-bar{height:8px;border-radius:6px;background:var(--surface-2);overflow:hidden;margin-bottom:26px;}
+  .meter-fill{
+    height:100%;width:64%;border-radius:6px;
+    background:linear-gradient(90deg, var(--violet), var(--diamond));
+    box-shadow:0 0 14px rgba(94,234,212,0.5);
+  }
+  .meter-sessions{display:flex;flex-direction:column;gap:10px;}
+  .meter-sessions .s-row{
+    display:flex;align-items:center;justify-content:space-between;
+    font-family:var(--font-mono);font-size:12.5px;color:var(--muted);
+    padding:10px 12px;background:var(--surface);border-radius:10px;border:1px solid var(--line);
+  }
+  .s-row .s-name{color:var(--text);display:flex;align-items:center;gap:8px;}
+  .s-status{width:6px;height:6px;border-radius:50%;background:var(--diamond);}
+
+  /* ---------- CUSTOMIZATION CHIPS ---------- */
+  .chip-groups{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:20px;
+  }
+  .chip-group{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:26px;
+  }
+  .chip-group h3{
+    font-family:var(--font-mono);font-size:12.5px;color:var(--diamond);
+    letter-spacing:.03em;margin-bottom:18px;font-weight:500;text-transform:uppercase;
+  }
+  .chips{display:flex;flex-wrap:wrap;gap:9px;}
+  .chip{
+    font-size:13.5px;color:var(--text);
+    background:var(--surface-2);
+    border:1px solid var(--line);
+    border-radius:100px;
+    padding:8px 16px;
+    transition:border-color .2s ease, transform .2s ease;
+  }
+  .chip:hover{border-color:var(--violet-dim);transform:translateY(-2px);}
+  .chip-mono{font-family:var(--font-mono);font-size:12px;color:var(--diamond);border-color:var(--diamond-dim);}
+  @media (max-width:920px){
+    .chip-groups{grid-template-columns:1fr;}
+  }
+
+  /* ---------- CTA ---------- */
+  .cta-section{
+    text-align:center;
+    background:linear-gradient(180deg, var(--surface), var(--bg));
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+  }
+  .cta-section h2{font-size:clamp(28px,4vw,42px);margin-bottom:18px;}
+  .cta-section p{color:var(--muted);max-width:480px;margin:0 auto 34px;}
+  .cta-buttons{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;}
+
+  /* ---------- FOOTER ---------- */
+  footer{padding:50px 0 40px;}
+  .footer-grid{
+    display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;
+    border-top:1px solid var(--line);padding-top:32px;
+  }
+  .footer-links{display:flex;gap:24px;flex-wrap:wrap;font-size:13.5px;color:var(--muted);}
+  .footer-links a:hover{color:var(--text);}
+  .footer-copy{font-family:var(--font-mono);font-size:12px;color:var(--muted);}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:920px){
+    .nav-links{display:none;}
+    .burger{display:flex;}
+    .hero{grid-template-columns:1fr;padding-top:60px;}
+    .hero-visual{order:-1;max-width:340px;margin:0 auto;}
+    .features-grid{grid-template-columns:1fr 1fr;}
+    .steps{grid-template-columns:1fr 1fr;row-gap:36px;}
+    .step{border-inline-start:none;padding-inline-start:0;}
+    .economy{grid-template-columns:1fr;padding:36px 24px;}
+  }
+  @media (max-width:560px){
+    .features-grid{grid-template-columns:1fr;}
+    .steps{grid-template-columns:1fr;}
+    section{padding:70px 0;}
+    .hero{padding-top:44px;padding-bottom:50px;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <div class="logo">
+      <div class="logo-mark">NS</div>
+      NovaSelfManagerBot
+    </div>
+    <ul class="nav-links">
+      <li><a href="#features">امکانات</a></li>
+      <li><a href="#how">نحوه کار</a></li>
+      <li><a href="#economy">اقتصاد الماس</a></li>
+      <li><a href="#customize">سفارشی‌سازی</a></li>
+      <li><a href="#contact">تماس</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a class="btn btn-primary" href="https://t.me/NovaSelfManagerBot" target="_blank" rel="noopener">شروع در تلگرام</a>
+      <button class="burger" id="burger" aria-label="باز کردن منو"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+  <ul class="nav-links" id="mobileMenu" style="display:none;flex-direction:column;gap:0;padding:0 24px 20px;">
+    <li style="padding:10px 0;"><a href="#features">امکانات</a></li>
+    <li style="padding:10px 0;"><a href="#how">نحوه کار</a></li>
+    <li style="padding:10px 0;"><a href="#economy">اقتصاد الماس</a></li>
+    <li style="padding:10px 0;"><a href="#customize">سفارشی‌سازی</a></li>
+    <li style="padding:10px 0;"><a href="#contact">تماس</a></li>
+  </ul>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="container" style="display:contents;">
+      <div class="hero-copy">
+        <span class="eyebrow">ربات مدیریت سلف تلگرام</span>
+        <h1>سلف تلگرامت را<br> <span class="accent">زنده و هوشمند</span> کن</h1>
+        <p class="lead">
+          NovaSelfManagerBot با وصل‌کردن سشن تلگرامت، ساعت و تاریخ زنده، اکشن‌های آنلاین،
+          منشی خودکار و حالت‌های متن حرفه‌ای را برایش فعال می‌کند؛ با یک اقتصاد الماس کاملاً شفاف.
+        </p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href="https://t.me/NovaSelfManagerBot" target="_blank" rel="noopener">شروع رایگان در تلگرام</a>
+          <a class="btn btn-ghost" href="#features">دیدن امکانات</a>
+        </div>
+        <div class="hero-meta">
+          <span><span class="dot"></span> ساخته‌شده با <b>Python · Telethon</b></span>
+          <span><span class="dot"></span> اجرا روی <b>Railway</b></span>
+          <span><span class="dot"></span> پایگاه‌داده <b>PostgreSQL</b></span>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <canvas id="orbit-canvas"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <div class="tech-strip">
+    <div class="container">
+      <span>زبان اصلی: <strong>Python</strong></span>
+      <span>کتابخانه سشن: <strong>Telethon</strong></span>
+      <span>پایگاه‌داده: <strong>PostgreSQL</strong></span>
+      <span>هاست پیشنهادی: <strong>Railway</strong></span>
+      <span>واحد پول داخلی: <strong>الماس</strong></span>
+    </div>
+  </div>
+
+  <section id="features">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">امکانات</span>
+        <h2>هر چیزی که برای اداره چند اکانت لازم داری</h2>
+        <p>از اتصال سشن تا صورتحساب، همه چیز در یک پنل یکپارچه.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#7C5CFC" stroke-width="1.6"/><path d="M12 7v5l3.5 2" stroke="#7C5CFC" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </div>
+          <h3>ساعت و تاریخ زنده</h3>
+          <p>ساعت یا تاریخ (میلادی، شمسی یا قمری) را با فونت دلخواه، لحظه‌به‌لحظه در نام یا بیوگرافی نمایش بده.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3.2" stroke="#7C5CFC" stroke-width="1.6"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1" stroke="#7C5CFC" stroke-width="1.4" stroke-linecap="round"/></svg>
+          </div>
+          <h3>اکشن‌های آنلاین</h3>
+          <p>تایپینگ، ضبط صدا، آپلود عکس یا ویدیو و چند اکشن دیگر را خودکار نشان بده تا همیشه فعال دیده شوی.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 5h14v10H9l-4 4V5z" stroke="#5EEAD4" stroke-width="1.6" stroke-linejoin="round"/><path d="M8.5 9.5h7M8.5 12.5h4" stroke="#5EEAD4" stroke-width="1.4" stroke-linecap="round"/></svg>
+          </div>
+          <h3>حالت‌های متن</h3>
+          <p>پیام‌هایت را خودکار با نقل‌قول، بولد، زیرخط، اسپویلر، خط‌خورده یا افکت تدریجی بفرست.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3" stroke="#7C5CFC" stroke-width="1.6"/><circle cx="17" cy="9" r="2.3" stroke="#7C5CFC" stroke-width="1.6"/><path d="M4 19c0-3 2.5-5 5-5s5 2 5 5M14.5 19c.2-2.2 1.6-3.8 3.5-4.3" stroke="#7C5CFC" stroke-width="1.4" stroke-linecap="round"/></svg>
+          </div>
+          <h3>تگ گروهی</h3>
+          <p>با یک دستور متنی ساده، همه اعضا یا فقط ادمین‌های گروه را منشن کن.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="4" y="7" width="16" height="12" rx="2" stroke="#5EEAD4" stroke-width="1.6"/><path d="M4 9l8 6 8-6" stroke="#5EEAD4" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h3>منشی هوشمند</h3>
+          <p>به اولین پیام خصوصی هرکس، با تأخیر دلخواه، یک پاسخ خودکار و قابل‌تنظیم ارسال می‌کند.</p>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2L4 9l8 13 8-13-8-7z" stroke="#7C5CFC" stroke-width="1.6" stroke-linejoin="round"/><path d="M4 9h16M9 9l3 13 3-13" stroke="#7C5CFC" stroke-width="1.3"/></svg>
+          </div>
+          <h3>الماس و رفرال</h3>
+          <p>موجودی الماس، انتقال بین کاربران و سیستم رفرال، همه از داخل حساب کاربری‌ات قابل مدیریت است.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="how">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">نحوه کار</span>
+        <h2>در چهار قدم راه بیفت</h2>
+      </div>
+      <div class="steps">
+        <div class="step reveal">
+          <span class="step-num">۰۱</span>
+          <h3>سشنت را وصل کن</h3>
+          <p>با ارسال Session String تلگرامت، سلف در ربات ثبت و فعال می‌شود.</p>
+        </div>
+        <div class="step reveal">
+          <span class="step-num">۰۲</span>
+          <h3>ظاهرش را بچین</h3>
+          <p>ساعت زنده، فونت، حالت متن و اکشن‌های آنلاین را از منو انتخاب کن.</p>
+        </div>
+        <div class="step reveal">
+          <span class="step-num">۰۳</span>
+          <h3>منشی و تگ را فعال کن</h3>
+          <p>پاسخ خودکار پیوی و تگ گروهی را یک‌بار تنظیم کن، بقیه‌اش خودکار است.</p>
+        </div>
+        <div class="step reveal">
+          <span class="step-num">۰۴</span>
+          <h3>با الماس شارژ بمان</h3>
+          <p>مصرف ساعتی شفاف است؛ همیشه می‌دانی موجودی‌ات کِی تمام می‌شود.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="economy">
+    <div class="container">
+      <div class="economy reveal">
+        <div class="economy-copy">
+          <span class="eyebrow">اقتصاد الماس</span>
+          <h2>مصرفی که همیشه شفاف است</h2>
+          <p>الماس واحد پول داخلی NovaSelfManagerBot است. تا سلف روشن است، بر اساس ساعت مصرف، الماس کم می‌شود و تو همیشه می‌دانی موجودی‌ات کِی تمام می‌شود.</p>
+          <ul class="economy-list">
+            <li>مصرف ثابت و شفاف: ۵ الماس به ازای هر ساعت روشن‌بودن سلف</li>
+            <li>هر الماس ۲۰ تومان، بدون هزینه پنهان</li>
+            <li>امکان انتقال مستقیم الماس بین کاربران</li>
+            <li>دریافت الماس هدیه از طریق سیستم رفرال</li>
+          </ul>
+        </div>
+        <div class="meter-card">
+          <div class="meter-row">
+            <span class="label">موجودی الماس</span>
+            <span class="value">۴۲۰ ◆</span>
+          </div>
+          <div class="meter-bar"><div class="meter-fill"></div></div>
+          <div class="meter-sessions">
+            <div class="s-row"><span class="s-name"><span class="s-status"></span>وضعیت سلف</span><span>🟢 فعال</span></div>
+            <div class="s-row"><span class="s-name"><span class="s-status"></span>نرخ مصرف</span><span>۵ الماس / ساعت</span></div>
+            <div class="s-row"><span class="s-name"><span class="s-status"></span>قیمت هر الماس</span><span>۲۰ تومان</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="customize">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">سفارشی‌سازی</span>
+        <h2>دقیقاً همان‌طور که دوست داری</h2>
+        <p>هر بخش از رفتار سلفت را خودت انتخاب می‌کنی؛ چیزی از پیش تحمیل نمی‌شود.</p>
+      </div>
+      <div class="chip-groups reveal">
+        <div class="chip-group">
+          <h3>حالت‌های متن</h3>
+          <div class="chips">
+            <span class="chip">نقل قول</span>
+            <span class="chip">بولد</span>
+            <span class="chip">زیرخط</span>
+            <span class="chip">ایتالیک</span>
+            <span class="chip">اسپویلر</span>
+            <span class="chip">خط‌خورده</span>
+            <span class="chip">تدریجی</span>
+            <span class="chip">تک‌فاصله</span>
+          </div>
+        </div>
+        <div class="chip-group">
+          <h3>نمایش تاریخ و ساعت</h3>
+          <div class="chips">
+            <span class="chip">میلادی</span>
+            <span class="chip">شمسی</span>
+            <span class="chip">قمری</span>
+            <span class="chip chip-mono">۱۴ فونت برای نمایش اعداد</span>
+          </div>
+        </div>
+        <div class="chip-group">
+          <h3>اکشن‌های آنلاین</h3>
+          <div class="chips">
+            <span class="chip">تایپینگ</span>
+            <span class="chip">ضبط صدا</span>
+            <span class="chip">آپلود عکس</span>
+            <span class="chip">ضبط ویدیو</span>
+            <span class="chip">ارسال سند</span>
+            <span class="chip">ارسال ویدیو</span>
+            <span class="chip">بازی</span>
+            <span class="chip">انتخاب استیکر</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section" id="contact">
+    <div class="container">
+      <span class="eyebrow" style="justify-content:center;">شروع کن</span>
+      <h2 style="margin-top:16px;">آماده‌ای کنترل را به دست بگیری؟</h2>
+      <p>همین حالا وارد ربات شو، اولین سشن را وصل کن و پنل را ببین.</p>
+      <div class="cta-buttons">
+        <a class="btn btn-primary" href="https://t.me/NovaSelfManagerBot" target="_blank" rel="noopener">باز کردن NovaSelfManagerBot</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="logo">
+        <div class="logo-mark">NS</div>
+        NovaSelfManagerBot
+      </div>
+      <ul class="footer-links">
+        <li><a href="#features">امکانات</a></li>
+        <li><a href="#how">نحوه کار</a></li>
+        <li><a href="#customize">سفارشی‌سازی</a></li>
+        <li><a href="https://t.me/NovaSelfManagerBot" target="_blank" rel="noopener">تلگرام</a></li>
+      </ul>
+      <span class="footer-copy">© 2026 NovaSelfManagerBot</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // mobile menu
+  const burger = document.getElementById('burger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  burger.addEventListener('click', () => {
+    mobileMenu.style.display = mobileMenu.style.display === 'none' ? 'flex' : 'none';
+  });
+  mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileMenu.style.display = 'none'));
+
+  // scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in-view'); io.unobserve(e.target); } });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+
+  // orbit canvas — core node with orbiting session nodes + diamond particles
+  const canvas = document.getElementById('orbit-canvas');
+  const ctx = canvas.getContext('2d');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let W, H, DPR;
+
+  function resize() {
+    DPR = Math.min(window.devicePixelRatio || 1, 2);
+    const rect = canvas.parentElement.getBoundingClientRect();
+    W = rect.width; H = rect.height;
+    canvas.width = W * DPR; canvas.height = H * DPR;
+    canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  const satellites = [
+    { r: 0.34, speed: 0.28, size: 6, phase: 0 },
+    { r: 0.42, speed: -0.20, size: 5, phase: 2.1 },
+    { r: 0.30, speed: 0.36, size: 4.5, phase: 4.2 },
+    { r: 0.46, speed: 0.15, size: 5.5, phase: 1.1 },
+    { r: 0.38, speed: -0.30, size: 4, phase: 3.4 }
+  ];
+  const particles = satellites.map(() => ({ t: Math.random() }));
+
+  let t0 = performance.now();
+  function frame(now) {
+    const dt = reduceMotion ? 0 : (now - t0) / 1000;
+    t0 = now;
+    const cx = W / 2, cy = H / 2;
+    const baseR = Math.min(W, H);
+
+    ctx.clearRect(0, 0, W, H);
+
+    // core glow
+    const coreR = baseR * 0.09;
+    const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, coreR * 3.4);
+    grad.addColorStop(0, 'rgba(124,92,252,0.55)');
+    grad.addColorStop(1, 'rgba(124,92,252,0)');
+    ctx.fillStyle = grad;
+    ctx.beginPath(); ctx.arc(cx, cy, coreR * 3.4, 0, Math.PI * 2); ctx.fill();
+
+    ctx.fillStyle = '#EDEEF7';
+    ctx.beginPath(); ctx.arc(cx, cy, coreR, 0, Math.PI * 2); ctx.fill();
+    ctx.strokeStyle = 'rgba(94,234,212,0.5)';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.arc(cx, cy, coreR + 8, 0, Math.PI * 2); ctx.stroke();
+
+    satellites.forEach((s, i) => {
+      s.phase += dt * s.speed;
+      const rad = baseR * s.r;
+      const x = cx + Math.cos(s.phase) * rad;
+      const y = cy + Math.sin(s.phase) * rad * 0.72;
+
+      // orbit path
+      ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.ellipse(cx, cy, rad, rad * 0.72, 0, 0, Math.PI * 2); ctx.stroke();
+
+      // connection line
+      ctx.strokeStyle = 'rgba(124,92,252,0.18)';
+      ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(x, y); ctx.stroke();
+
+      // diamond particle traveling toward core
+      const p = particles[i];
+      p.t += dt * 0.35;
+      if (p.t > 1) p.t = 0;
+      const px = x + (cx - x) * p.t;
+      const py = y + (cy - y) * p.t;
+      ctx.fillStyle = '#5EEAD4';
+      ctx.save();
+      ctx.translate(px, py); ctx.rotate(Math.PI / 4);
+      ctx.fillRect(-3, -3, 6, 6);
+      ctx.restore();
+
+      // satellite node
+      ctx.fillStyle = '#191C38';
+      ctx.strokeStyle = '#7C5CFC';
+      ctx.lineWidth = 1.6;
+      ctx.beginPath(); ctx.arc(x, y, s.size, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+    });
+
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+</script>
+
+</body>
+</html>
