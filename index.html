@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -1401,6 +1402,46 @@
     }
     requestAnimationFrame(frame);
   </script>
+<script>
+const tg = window.Telegram.WebApp;
 
+tg.ready();
+tg.expand();
+
+// جلوگیری از اسکرول اضافی
+document.body.style.overscrollBehavior = "none";
+
+// رنگ‌های تلگرام
+const theme = tg.themeParams;
+
+if(theme.bg_color){
+    document.documentElement.style.setProperty("--bg", theme.bg_color);
+}
+
+if(theme.text_color){
+    document.documentElement.style.setProperty("--text", theme.text_color);
+}
+
+// اطلاعات کاربر
+const user = tg.initDataUnsafe?.user;
+
+if(user){
+    console.log("Telegram User:", user);
+
+    window.telegramUser = {
+        id: user.id,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        username: user.username,
+        language: user.language_code
+    };
+}
+
+// دکمه برگشت
+tg.BackButton.hide();
+
+// دکمه بستن
+tg.MainButton.hide();
+          </script>
 </body>
                   </html>
