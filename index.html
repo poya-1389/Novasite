@@ -1,53 +1,578 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
-  <title>NovaSelf</title>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"/>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<title>NovaSelf</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+  :root{
+    --bg-1:#07080d;
+    --bg-2:#0e1220;
+    --glass-fill: rgba(255,255,255,0.06);
+    --glass-fill-strong: rgba(255,255,255,0.10);
+    --glass-border: rgba(255,255,255,0.14);
+    --glass-highlight: rgba(255,255,255,0.35);
+    --accent-a:#5b8dff;
+    --accent-b:#8f6bff;
+    --accent-c:#4fd1ff;
+    --danger:#ff6b6b;
+    --good:#33d17a;
+    --text-1:#f5f6fb;
+    --text-2:rgba(245,246,251,0.62);
+    --text-3:rgba(245,246,251,0.38);
+    --radius-xl:28px;
+    --radius-lg:22px;
+    --radius-md:16px;
+    --radius-sm:12px;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;height:100%;}
+  body{
+    font-family:-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Vazirmatn", "Segoe UI", sans-serif;
+    color:var(--text-1);
+    background:
+      radial-gradient(120% 70% at 15% -10%, rgba(91,141,255,0.35), transparent 60%),
+      radial-gradient(110% 60% at 100% 0%, rgba(143,107,255,0.30), transparent 55%),
+      radial-gradient(140% 90% at 50% 120%, rgba(79,209,255,0.18), transparent 60%),
+      var(--bg-1);
+    min-height:100vh;
+    overflow-x:hidden;
+    position:relative;
+  }
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    background-image:
+      radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,0.5), transparent),
+      radial-gradient(1.5px 1.5px at 70% 60%, rgba(255,255,255,0.35), transparent),
+      radial-gradient(1.5px 1.5px at 40% 80%, rgba(255,255,255,0.3), transparent),
+      radial-gradient(2px 2px at 85% 20%, rgba(255,255,255,0.4), transparent);
+    opacity:0.5;
+    pointer-events:none;
+    z-index:0;
+  }
+  .app{position:relative; z-index:1; max-width:520px; margin:0 auto; padding:14px 14px 100px;}
+
+  /* ===== Header ===== */
+  .header{
+    display:flex; align-items:center; gap:14px;
+    padding:18px;
+    border-radius:var(--radius-xl);
+    background:linear-gradient(155deg, var(--glass-fill-strong), var(--glass-fill));
+    border:1px solid var(--glass-border);
+    backdrop-filter:blur(28px) saturate(160%);
+    -webkit-backdrop-filter:blur(28px) saturate(160%);
+    box-shadow:0 1px 0 rgba(255,255,255,0.25) inset, 0 20px 40px -20px rgba(0,0,0,0.6);
+    position:relative;
+    overflow:hidden;
+    margin-bottom:14px;
+  }
+  .header::after{
+    content:"";
+    position:absolute; top:-60%; left:-20%;
+    width:70%; height:220%;
+    background:linear-gradient(120deg, rgba(255,255,255,0.18), transparent 60%);
+    transform:rotate(20deg);
+    pointer-events:none;
+  }
+  .avatar{
+    width:56px; height:56px; border-radius:18px;
+    display:flex; align-items:center; justify-content:center;
+    font-weight:700; font-size:20px;
+    background:linear-gradient(150deg, var(--accent-a), var(--accent-b));
+    box-shadow:0 6px 18px -6px rgba(91,141,255,0.6), 0 1px 0 rgba(255,255,255,0.4) inset;
+    flex-shrink:0;
+    color:#fff;
+  }
+  .head-info{min-width:0; flex:1;}
+  .head-name{font-size:17px; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .head-sub{font-size:13px; color:var(--text-2); margin-top:2px;}
+  .status-pill{
+    display:inline-flex; align-items:center; gap:6px;
+    padding:6px 12px; border-radius:999px;
+    font-size:12px; font-weight:600;
+    background:rgba(255,255,255,0.08);
+    border:1px solid var(--glass-border);
+    margin-top:8px;
+  }
+  .dot{width:7px; height:7px; border-radius:50%; background:var(--text-3);}
+  .status-pill.on .dot{background:var(--good); box-shadow:0 0 8px var(--good);}
+  .status-pill.off .dot{background:var(--danger); box-shadow:0 0 8px var(--danger);}
+
+  /* ===== Tab bar (segmented, glass) ===== */
+  .tabbar{
+    display:flex; gap:4px; padding:5px;
+    border-radius:999px;
+    background:var(--glass-fill);
+    border:1px solid var(--glass-border);
+    backdrop-filter:blur(20px) saturate(150%);
+    -webkit-backdrop-filter:blur(20px) saturate(150%);
+    margin-bottom:16px;
+    position:sticky; top:10px; z-index:5;
+  }
+  .tab{
+    flex:1; text-align:center; padding:10px 6px;
+    font-size:13.5px; font-weight:600; color:var(--text-2);
+    border-radius:999px; cursor:pointer;
+    transition:color .25s ease;
+    position:relative; z-index:2;
+  }
+  .tab.active{color:#fff;}
+  .tab-indicator{
+    position:absolute; top:5px; bottom:5px; left:5px;
+    width:calc((100% - 10px)/3);
+    border-radius:999px;
+    background:linear-gradient(135deg, var(--accent-a), var(--accent-b));
+    box-shadow:0 6px 16px -6px rgba(91,141,255,0.7), 0 1px 0 rgba(255,255,255,0.35) inset;
+    transition:transform .35s cubic-bezier(.4,0,.2,1);
+    z-index:1;
+  }
+
+  .panel{display:none; animation:fadeIn .3s ease;}
+  .panel.active{display:block;}
+  @keyframes fadeIn{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
+
+  /* ===== Cards ===== */
+  .card{
+    border-radius:var(--radius-lg);
+    background:linear-gradient(160deg, var(--glass-fill-strong), var(--glass-fill));
+    border:1px solid var(--glass-border);
+    backdrop-filter:blur(24px) saturate(150%);
+    -webkit-backdrop-filter:blur(24px) saturate(150%);
+    box-shadow:0 1px 0 rgba(255,255,255,0.2) inset, 0 16px 30px -18px rgba(0,0,0,0.55);
+    padding:16px;
+    margin-bottom:14px;
+  }
+  .card-title{font-size:14px; font-weight:700; color:var(--text-1); margin:0 0 3px;}
+  .card-desc{font-size:12.5px; color:var(--text-2); margin:0 0 12px; line-height:1.7;}
+
+  .row{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:11px 2px;
+    border-bottom:1px solid rgba(255,255,255,0.06);
+  }
+  .row:last-child{border-bottom:none;}
+  .row-label{font-size:14px; font-weight:500;}
+  .row-value{font-size:13.5px; color:var(--text-2);}
+
+  /* iOS-style toggle */
+  .switch{
+    width:48px; height:29px; border-radius:999px; position:relative; cursor:pointer;
+    background:rgba(255,255,255,0.14); border:1px solid var(--glass-border);
+    transition:background .25s ease; flex-shrink:0;
+  }
+  .switch.on{background:linear-gradient(135deg, var(--good), #26a866); border-color:transparent;}
+  .switch::after{
+    content:""; position:absolute; top:2px; left:2px;
+    width:23px; height:23px; border-radius:50%;
+    background:#fff; box-shadow:0 2px 6px rgba(0,0,0,0.35);
+    transition:transform .25s cubic-bezier(.4,0,.2,1);
+  }
+  .switch.on::after{transform:translateX(19px);}
+  html[dir="rtl"] .switch.on::after{transform:translateX(-19px);}
+
+  /* chip grid for fonts / text modes */
+  .chip-grid{display:flex; flex-wrap:wrap; gap:8px; margin-top:4px;}
+  .chip{
+    padding:9px 14px; border-radius:999px; font-size:13px; font-weight:600;
+    background:rgba(255,255,255,0.06); border:1px solid var(--glass-border);
+    color:var(--text-2); cursor:pointer; transition:all .2s ease;
+  }
+  .chip.active{
+    color:#fff; border-color:transparent;
+    background:linear-gradient(135deg, var(--accent-a), var(--accent-c));
+    box-shadow:0 6px 14px -6px rgba(79,209,255,0.6);
+  }
+
+  textarea, input[type=text]{
+    width:100%; padding:12px 14px; border-radius:var(--radius-sm);
+    background:rgba(255,255,255,0.06); border:1px solid var(--glass-border);
+    color:var(--text-1); font-size:13.5px; font-family:inherit;
+    resize:none; outline:none;
+  }
+  input[type=range]{width:100%; accent-color:var(--accent-a); margin-top:8px;}
+
+  .btn{
+    width:100%; padding:13px; border-radius:var(--radius-sm);
+    background:linear-gradient(135deg, var(--accent-a), var(--accent-b));
+    border:none; color:#fff; font-weight:700; font-size:14px;
+    cursor:pointer; box-shadow:0 10px 20px -10px rgba(91,141,255,0.6), 0 1px 0 rgba(255,255,255,0.3) inset;
+    margin-top:6px;
+  }
+  .btn.danger{background:linear-gradient(135deg, #ff8080, var(--danger));}
+  .btn:active{transform:scale(0.98);}
+
+  .stat-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  .stat{
+    border-radius:var(--radius-md); padding:14px;
+    background:rgba(255,255,255,0.05); border:1px solid var(--glass-border);
+    text-align:center;
+  }
+  .stat-num{font-size:20px; font-weight:800; background:linear-gradient(135deg, var(--accent-c), var(--accent-a)); -webkit-background-clip:text; background-clip:text; color:transparent;}
+  .stat-label{font-size:11.5px; color:var(--text-2); margin-top:3px;}
+
+  .about-feature{display:flex; gap:12px; padding:10px 0;}
+  .about-icon{
+    width:38px; height:38px; border-radius:12px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center; font-size:17px;
+    background:linear-gradient(150deg, rgba(91,141,255,0.35), rgba(143,107,255,0.25));
+    border:1px solid var(--glass-border);
+  }
+  .about-text-title{font-size:13.5px; font-weight:700;}
+  .about-text-desc{font-size:12px; color:var(--text-2); margin-top:2px; line-height:1.6;}
+
+  .toast{
+    position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(20px);
+    padding:12px 20px; border-radius:999px;
+    background:rgba(20,22,32,0.9); border:1px solid var(--glass-border);
+    backdrop-filter:blur(20px); font-size:13px; font-weight:600;
+    opacity:0; transition:all .3s ease; z-index:50; pointer-events:none;
+    box-shadow:0 12px 30px -10px rgba(0,0,0,0.6);
+  }
+  .toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+
+  .skeleton{
+    height:14px; border-radius:8px; background:rgba(255,255,255,0.08);
+    animation:pulse 1.4s ease-in-out infinite;
+  }
+  @keyframes pulse{0%,100%{opacity:.5;} 50%{opacity:1;}}
+
+  .footer-note{text-align:center; font-size:11.5px; color:var(--text-3); margin-top:8px; line-height:1.8;}
+</style>
 </head>
 <body>
-  <div class="container">
-    <header class="glass">
-      <h1>NovaSelf <span class="star">✦</span></h1>
-      <p id="greeting" class="greeting"></p>
-    </header>
+<div class="app">
 
-    <!-- Status -->
-    <div id="status-card" class="glass status-card">
-      <div class="status-main">
-        <div class="status-info">
-          <div id="status-dot" class="status-dot"></div>
-          <div>
-            <h2 id="status-text">نامشخص</h2>
-            <p id="status-sub">در حال اتصال...</p>
-          </div>
-        </div>
-        <button id="toggle-btn" class="toggle-btn glass">
-          <i class="fas fa-power-off"></i> <span>روشن کردن سلف</span>
-        </button>
+  <div class="header">
+    <div class="avatar" id="avatar">N</div>
+    <div class="head-info">
+      <div class="head-name" id="userName">در حال بارگذاری...</div>
+      <div class="head-sub" id="userUsername">&nbsp;</div>
+      <div class="status-pill off" id="statusPill"><span class="dot"></span><span id="statusPillText">در حال بررسی</span></div>
+    </div>
+  </div>
+
+  <div class="tabbar" id="tabbar">
+    <div class="tab-indicator" id="tabIndicator"></div>
+    <div class="tab active" data-tab="profile">پروفایل</div>
+    <div class="tab" data-tab="settings">تنظیمات سلف</div>
+    <div class="tab" data-tab="about">درباره</div>
+  </div>
+
+  <!-- ===== PROFILE ===== -->
+  <div class="panel active" id="panel-profile">
+    <div class="card">
+      <div class="card-title">💎 حساب کاربری</div>
+      <div class="card-desc">موجودی و آمار فعالیت سلف شما</div>
+      <div class="stat-grid">
+        <div class="stat"><div class="stat-num" id="statDiamonds">--</div><div class="stat-label">موجودی الماس</div></div>
+        <div class="stat"><div class="stat-num" id="statReferral">--</div><div class="stat-label">زیرمجموعه</div></div>
       </div>
     </div>
 
-    <!-- Tabs -->
-    <div class="tabs glass">
-      <button class="tab active" data-tab="main"><i class="fas fa-home"></i><span>خانه</span></button>
-      <button class="tab" data-tab="time"><i class="fas fa-clock"></i><span>ساعت</span></button>
-      <button class="tab" data-tab="date"><i class="fas fa-calendar-alt"></i><span>تاریخ</span></button>
-      <button class="tab" data-tab="action"><i class="fas fa-bolt"></i><span>اکشن</span></button>
-      <button class="tab" data-tab="account"><i class="fas fa-wallet"></i><span>حساب</span></button>
+    <div class="card">
+      <div class="card-title">👤 اطلاعات تلگرام</div>
+      <div class="row"><div class="row-label">آیدی عددی</div><div class="row-value" id="infoId">--</div></div>
+      <div class="row"><div class="row-label">نام کاربری</div><div class="row-value" id="infoUsername">--</div></div>
+      <div class="row"><div class="row-label">زبان</div><div class="row-value" id="infoLang">--</div></div>
+      <div class="row"><div class="row-label">تاریخ عضویت در NovaSelf</div><div class="row-value" id="infoJoined">--</div></div>
     </div>
 
-    <!-- Contents -->
-    <div id="main" class="tab-content active"></div>
-    <div id="time" class="tab-content"></div>
-    <div id="date" class="tab-content"></div>
-    <div id="action" class="tab-content"></div>
-    <div id="account" class="tab-content"></div>
+    <button class="btn" id="refreshBtn">🔄 بروزرسانی اطلاعات</button>
   </div>
 
-  <script src="app.js"></script>
+  <!-- ===== SETTINGS ===== -->
+  <div class="panel" id="panel-settings">
+
+    <div class="card">
+      <div class="card-title">⚡ وضعیت سلف</div>
+      <div class="card-desc">با روشن کردن سلف، اکشن‌ها و قابلیت‌های خودکار روی حساب شما فعال می‌شوند.</div>
+      <div class="row">
+        <div class="row-label">سلف من</div>
+        <div class="switch" id="sw-status" data-field="status"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🔤 فونت نام و بیو</div>
+      <div class="card-desc">فونتی که برای زمان‌نگار پروفایل استفاده می‌شود.</div>
+      <div class="chip-grid" id="fontGrid"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🖊️ حالت متن ارسالی</div>
+      <div class="card-desc">قالب‌بندی خودکار پیام‌های ارسالی شما.</div>
+      <div class="chip-grid" id="textModeGrid"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📅 تاریخ در بیو</div>
+      <div class="row">
+        <div class="row-label">نمایش تاریخ</div>
+        <div class="switch" id="sw-date_enabled" data-field="date_enabled"></div>
+      </div>
+      <div class="card-desc" style="margin:10px 0 6px;">نوع تقویم</div>
+      <div class="chip-grid" id="dateTypeGrid"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">⌚ ساعت پروفایل</div>
+      <div class="row">
+        <div class="row-label">ساعت در نام</div>
+        <div class="switch" id="sw-name_time" data-field="name_time"></div>
+      </div>
+      <div class="row">
+        <div class="row-label">ساعت در بیو</div>
+        <div class="switch" id="sw-bio_time" data-field="bio_time"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🧑‍💼 منشی خودکار</div>
+      <div class="row">
+        <div class="row-label">فعال‌سازی منشی</div>
+        <div class="switch" id="sw-secretary_enabled" data-field="secretary_enabled"></div>
+      </div>
+      <div class="card-desc" style="margin:10px 0 6px;">متن پاسخ خودکار</div>
+      <textarea id="secretaryText" rows="2" placeholder="متن پاسخ منشی..."></textarea>
+      <div class="card-desc" style="margin:12px 0 2px;">تأخیر پاسخ: <span id="secretaryDelayVal">60</span> ثانیه</div>
+      <input type="range" id="secretaryDelay" min="5" max="600" step="5">
+      <button class="btn" id="saveSecretaryBtn">ذخیره تنظیمات منشی</button>
+    </div>
+  </div>
+
+  <!-- ===== ABOUT ===== -->
+  <div class="panel" id="panel-about">
+    <div class="card">
+      <div class="card-title">✨ NovaSelf چیست؟</div>
+      <div class="card-desc">NovaSelf یک سلف‌بات اختصاصی است که با اتصال به حساب تلگرام شما، مجموعه‌ای از قابلیت‌های خودکار و شخصی‌سازی را در اختیارتان می‌گذارد؛ همه چیز از طریق همین پنل قابل مدیریت است.</div>
+
+      <div class="about-feature">
+        <div class="about-icon">⌚</div>
+        <div><div class="about-text-title">زمان‌نگار خودکار</div><div class="about-text-desc">نمایش زنده ساعت و تاریخ در نام یا بیوی حساب شما.</div></div>
+      </div>
+      <div class="about-feature">
+        <div class="about-icon">🖊️</div>
+        <div><div class="about-text-title">قالب‌بندی پیام</div><div class="about-text-desc">اعمال خودکار بولد، ایتالیک، اسپویلر و بیشتر روی پیام‌های ارسالی.</div></div>
+      </div>
+      <div class="about-feature">
+        <div class="about-icon">🧑‍💼</div>
+        <div><div class="about-text-title">منشی هوشمند</div><div class="about-text-desc">پاسخ خودکار به پیام‌های جدید هنگام عدم دسترسی شما.</div></div>
+      </div>
+      <div class="about-feature">
+        <div class="about-icon">🏷️</div>
+        <div><div class="about-text-title">تگ اعضا و ادمین‌ها</div><div class="about-text-desc">منشن سریع اعضای گروه با یک دستور ساده.</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">💎 سیستم الماس</div>
+      <div class="card-desc">مصرف سلف بر اساس ساعت روشن بودن، از موجودی الماس شما کسر می‌شود. در صورت اتمام موجودی، سلف به‌صورت خودکار خاموش خواهد شد.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🛟 پشتیبانی</div>
+      <div class="card-desc" id="supportLine">برای هرگونه سوال یا مشکل با پشتیبانی در ارتباط باشید.</div>
+      <button class="btn" id="supportBtn">ارتباط با پشتیبانی</button>
+    </div>
+
+    <div class="footer-note">NovaSelf Mini App — نسخه ۱.۰</div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+   تنظیمات اتصال — این آدرس را به آدرس بک‌اند خودتان تغییر دهید
+   ============================================================ */
+const API_BASE = "https://YOUR_BACKEND_DOMAIN.example.com";
+const SUPPORT_USERNAME = "@SayPouYa";
+
+const tg = window.Telegram?.WebApp;
+let state = null; // آخرین اطلاعات دریافتی از سرور
+
+const FONT_NAMES = {
+  0:"معمولی",1:"بولد ضخیم",2:"بولد گرد",3:"ماشین‌تحریر",4:"بولد کلاسیک",
+  5:"ساده",6:"فول‌وید",7:"بولد مدرن",8:"بالانویس",9:"زیرنویس",
+  10:"دایره‌ای",11:"دایره‌ای پر",12:"فارسی",13:"عربی"
+};
+const TEXTMODE_NAMES = {0:"خاموش",1:"نقل‌قول",2:"بولد",3:"زیرخط",4:"ایتالیک",5:"اسپویلر",6:"خط‌خورده",7:"تدریجی",8:"تک‌فاصله"};
+const DATE_TYPE_NAMES = {"gregorian":"میلادی","shamsi":"شمسی","qamari":"قمری"};
+
+function init() {
+  if (tg) { tg.ready(); tg.expand(); tg.setHeaderColor?.("#0e1220"); }
+  setupTabs();
+  setupChipGrid("fontGrid", FONT_NAMES, "font_id");
+  setupChipGrid("textModeGrid", TEXTMODE_NAMES, "text_mode");
+  setupChipGrid("dateTypeGrid", DATE_TYPE_NAMES, "date_type");
+  setupSwitches();
+  document.getElementById("refreshBtn").onclick = loadData;
+  document.getElementById("saveSecretaryBtn").onclick = saveSecretary;
+  document.getElementById("secretaryDelay").oninput = e => {
+    document.getElementById("secretaryDelayVal").textContent = e.target.value;
+  };
+  document.getElementById("supportBtn").onclick = () => {
+    tg?.openTelegramLink?.(`https://t.me/${SUPPORT_USERNAME.replace("@","")}`);
+  };
+  document.getElementById("supportLine").textContent =
+    `برای هرگونه سوال یا مشکل با ${SUPPORT_USERNAME} در ارتباط باشید.`;
+  loadData();
+}
+
+function setupTabs() {
+  const tabs = [...document.querySelectorAll(".tab")];
+  const indicator = document.getElementById("tabIndicator");
+  tabs.forEach((tab, i) => {
+    tab.onclick = () => {
+      tabs.forEach(t => t.classList.remove("active"));
+      tab.classList.add("active");
+      indicator.style.transform = `translateX(${i * -100}%)`;
+      document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
+      document.getElementById(`panel-${tab.dataset.tab}`).classList.add("active");
+      tg?.HapticFeedback?.impactOccurred?.("light");
+    };
+  });
+}
+
+function setupChipGrid(gridId, namesMap, field) {
+  const grid = document.getElementById(gridId);
+  grid.innerHTML = "";
+  Object.entries(namesMap).forEach(([value, label]) => {
+    const chip = document.createElement("div");
+    chip.className = "chip";
+    chip.textContent = label;
+    chip.dataset.value = value;
+    chip.onclick = () => updateField(field, isNaN(value) ? value : Number(value), gridId);
+    grid.appendChild(chip);
+  });
+}
+
+function setupSwitches() {
+  document.querySelectorAll(".switch").forEach(sw => {
+    sw.onclick = () => {
+      const field = sw.dataset.field;
+      const newVal = !sw.classList.contains("on");
+      updateField(field, newVal);
+    };
+  });
+}
+
+function authHeaders() {
+  return {
+    "Content-Type": "application/json",
+    "X-Init-Data": tg?.initData || ""
+  };
+}
+
+async function loadData() {
+  try {
+    const res = await fetch(`${API_BASE}/api/me`, { headers: authHeaders() });
+    if (!res.ok) throw new Error("auth");
+    state = await res.json();
+    render();
+  } catch (e) {
+    showToast("❌ اتصال به سرور برقرار نشد");
+  }
+}
+
+async function updateField(field, value, gridIdToSync) {
+  tg?.HapticFeedback?.selectionChanged?.();
+  try {
+    const res = await fetch(`${API_BASE}/api/update`, {
+      method: "POST",
+      headers: authHeaders(),
+      body: JSON.stringify({ field, value })
+    });
+    const data = await res.json();
+    if (!res.ok || !data.ok) throw new Error(data.error || "update-failed");
+    state = data.user;
+    render();
+    showToast("✅ تغییرات ذخیره شد");
+  } catch (e) {
+    showToast("❌ خطا در ذخیره‌سازی");
+    render(); // بازگردانی وضعیت واقعی
+  }
+}
+
+async function saveSecretary() {
+  const text = document.getElementById("secretaryText").value;
+  const delay = Number(document.getElementById("secretaryDelay").value);
+  try {
+    const res = await fetch(`${API_BASE}/api/update`, {
+      method: "POST",
+      headers: authHeaders(),
+      body: JSON.stringify({ field: "secretary_bulk", secretary_text: text, secretary_delay: delay })
+    });
+    const data = await res.json();
+    if (!res.ok || !data.ok) throw new Error();
+    state = data.user;
+    render();
+    showToast("✅ تنظیمات منشی ذخیره شد");
+  } catch (e) {
+    showToast("❌ خطا در ذخیره‌سازی");
+  }
+}
+
+function render() {
+  if (!state) return;
+  const tgUser = tg?.initDataUnsafe?.user;
+
+  // Header
+  const name = [tgUser?.first_name, tgUser?.last_name].filter(Boolean).join(" ") || "کاربر";
+  document.getElementById("userName").textContent = name;
+  document.getElementById("userUsername").textContent = tgUser?.username ? "@" + tgUser.username : "بدون نام‌کاربری";
+  document.getElementById("avatar").textContent = name.charAt(0).toUpperCase();
+
+  const pill = document.getElementById("statusPill");
+  pill.classList.toggle("on", !!state.status);
+  pill.classList.toggle("off", !state.status);
+  document.getElementById("statusPillText").textContent = state.status ? "سلف فعال" : "سلف غیرفعال";
+
+  // Profile tab
+  document.getElementById("statDiamonds").textContent = state.diamonds_formatted ?? "--";
+  document.getElementById("statReferral").textContent = state.referral_count ?? 0;
+  document.getElementById("infoId").textContent = tgUser?.id ?? "--";
+  document.getElementById("infoUsername").textContent = tgUser?.username ? "@" + tgUser.username : "--";
+  document.getElementById("infoLang").textContent = tgUser?.language_code ?? "--";
+  document.getElementById("infoJoined").textContent = state.joined_at ?? "--";
+
+  // Settings
+  setSwitch("sw-status", state.status);
+  setSwitch("sw-date_enabled", state.date_enabled);
+  setSwitch("sw-name_time", state.name_time);
+  setSwitch("sw-bio_time", state.bio_time);
+  setSwitch("sw-secretary_enabled", state.secretary_enabled);
+  setActiveChip("fontGrid", state.font_id);
+  setActiveChip("textModeGrid", state.text_mode);
+  setActiveChip("dateTypeGrid", state.date_type);
+
+  document.getElementById("secretaryText").value = state.secretary_text || "";
+  document.getElementById("secretaryDelay").value = state.secretary_delay || 60;
+  document.getElementById("secretaryDelayVal").textContent = state.secretary_delay || 60;
+}
+
+function setSwitch(id, on) {
+  document.getElementById(id).classList.toggle("on", !!on);
+}
+function setActiveChip(gridId, value) {
+  document.querySelectorAll(`#${gridId} .chip`).forEach(chip => {
+    chip.classList.toggle("active", String(chip.dataset.value) === String(value));
+  });
+}
+
+let toastTimer;
+function showToast(msg) {
+  const el = document.getElementById("toast");
+  el.textContent = msg;
+  el.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove("show"), 2200);
+}
+
+init();
+</script>
 </body>
 </html>
