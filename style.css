@@ -1,49 +1,35 @@
-* { margin: 0; padding: 0; box-sizing: border-box; }
 body {
   font-family: 'Vazirmatn', system-ui, sans-serif;
-  background: var(--tg-theme-bg-color, #1e1e1e);
-  color: var(--tg-theme-text-color, #ffffff);
+  background: linear-gradient(135deg, #0c0c0c, #1a1a2e, #16213e);
+  color: #e0e0e0;
   min-height: 100vh;
 }
 
-.container { padding: 16px; max-width: 480px; margin: 0 auto; }
+.glass {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
 
-header { text-align: center; margin-bottom: 20px; }
-header h1 { font-size: 28px; margin-bottom: 8px; }
-
-.status-bar {
-  display: flex; align-items: center; justify-content: space-between;
-  background: var(--tg-theme-secondary-bg-color, #2a2a2a);
-  padding: 12px 16px; border-radius: 12px; margin-bottom: 20px;
+.card {
+  padding: 20px;
+  margin-bottom: 18px;
 }
 
 .toggle-btn {
-  padding: 10px 20px; border: none; border-radius: 50px;
-  font-weight: bold; cursor: pointer;
-  background: #00ff00; color: #000;
+  background: linear-gradient(90deg, #00ff9d, #00cc77);
+  color: #000;
+  font-weight: 700;
+  font-size: 18px;
+  padding: 18px;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(0, 255, 157, 0.4);
+  transition: all 0.3s ease;
 }
 
-.tabs {
-  display: flex; overflow-x: auto; gap: 8px; margin-bottom: 16px; padding-bottom: 8px;
+.toggle-btn:active {
+  transform: translateY(2px);
 }
-.tab {
-  padding: 10px 16px; border: none; background: #2a2a2a; color: white;
-  border-radius: 50px; white-space: nowrap; font-size: 14px;
-}
-.tab.active { background: #00bfff; }
-
-.tab-content { display: none; }
-.tab-content.active { display: block; }
-
-.card {
-  background: var(--tg-theme-secondary-bg-color, #2a2a2a);
-  border-radius: 12px; padding: 16px; margin-bottom: 16px;
-}
-
-button {
-  width: 100%; padding: 14px; margin: 8px 0;
-  border: none; border-radius: 10px; font-size: 16px;
-  background: #3b82f6; color: white; cursor: pointer;
-}
-
-button.danger { background: #ef4444; }
