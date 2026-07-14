@@ -1,41 +1,69 @@
 const tg = window.Telegram.WebApp;
-tg.expand();
-tg.ready();
+tg.expand(); tg.ready();
 
-const API_BASE = "https://your-bot-domain.onrender.com"; // یا آدرس Railway
+const API_BASE = "https://bountiful-wholeness-production-1c26.up.railway.app"; // ← اینجا عوض کن
 
-let userId = tg.initDataUnsafe.user?.id;
+let userId = tg.initDataUnsafe?.user?.id;
+let userData = {};
 
-async function fetchUserData() {
+// بارگذاری اطلاعات
+async function loadData() {
   try {
     const res = await fetch(`${API_BASE}/api/user?user_id=${userId}`);
-    const data = await res.json();
+    userData = await res.json();
 
-    if (data.error) throw new Error(data.error);
-
-    // بروزرسانی وضعیت
-    document.getElementById('status-text').textContent = data.status ? 'فعال' : 'خاموش';
-    document.getElementById('status-sub').textContent = data.status ? 'سلف در حال اجراست' : 'سلف خاموش است';
-
-    // دکمه
-    const btn = document.getElementById('toggle-btn');
-    btn.textContent = data.status ? 'خاموش کردن سلف' : 'روشن کردن سلف';
-    btn.style.background = data.status ? 
-      'linear-gradient(90deg, #ff3b5c, #ff6b6b)' : 
-      'linear-gradient(90deg, #00ff9d, #00cc77)';
-
+    updateStatus();
+    renderMain();
   } catch (e) {
-    console.error(e);
+    showOfflineMode();
   }
 }
 
-// ارسال دستور به ربات
-function sendAction(action) {
-  tg.sendData(JSON.stringify({ action: action }));
+function updateStatus() {
+  const isActive = userData.status || false;
+  document.getElementById('status-text').textContent = isActive ? "فعال" : "خاموش";
+  document.getElementById('status-sub').textContent = isActive ? "سلف در حال اجراست" : "سلف متوقف است";
+  document.getElementById('status-dot').style.background = isActive ? "#00ff88" : "#ff4757";
+
+  const btn = document.getElementById('toggle-btn');
+  btn.innerHTML = `<i class="fas fa-power-off"></i> <span>${isActive ? 'خاموش کردن' : 'روشن کردن سلف'}</span>`;
 }
 
-// لود اولیه
-document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('greeting').textContent = `سلام ${tg.initDataUnsafe.user?.first_name || ''} 👋`;
-  fetchUserData();
+function showOfflineMode() {
+  document.getElementById('status-text').textContent = "نامشخص";
+  document.getElementById('status-sub').textContent = "اتصال برقرار نشد";
+}
+
+// رندر صفحه اصلی
+function renderMain() {
+  document.getElementById('main').innerHTML = `
+    <div class="card glass">
+      <h3>💎 موجودی الماس</h3>
+      <h2>${userData.diamonds || 0} الماس</h2>
+    </div>
+    <div class="card glass">
+      <h3>👥 رفرال</h3>
+      <p>${userData.referral_count || 0} نفر</p>
+    </div>
+  `;
+}
+
+// تب‌ها
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    document.getElementById(tab.dataset.tab).classList.add('active');
+  });
 });
+
+// دکمه سوییچ
+document.getElementById('toggle-btn').addEventListener('click', () => {
+  tg.sendData(JSON.stringify({ action: "toggle_status" }));
+  setTimeout(loadData, 1000);
+});
+
+// شروع
+document.getElementById('greeting').textContent = `سلام ${tg.initDataUnsafe.user?.first_name || 'دوست عزیز'} ✦`;
+loadData();
