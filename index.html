@@ -164,13 +164,12 @@
   }
   .switch.on{background:linear-gradient(135deg, var(--good), #26a866); border-color:transparent;}
   .switch::after{
-    content:""; position:absolute; top:2px; left:2px;
+    content:""; position:absolute; top:2px; right:2px;
     width:23px; height:23px; border-radius:50%;
     background:#fff; box-shadow:0 2px 6px rgba(0,0,0,0.35);
     transition:transform .25s cubic-bezier(.4,0,.2,1);
   }
-  .switch.on::after{transform:translateX(19px);}
-  html[dir="rtl"] .switch.on::after{transform:translateX(-19px);}
+  .switch.on::after{transform:translateX(-19px);}
 
   /* chip grid for fonts / text modes */
   .chip-grid{display:flex; flex-wrap:wrap; gap:8px; margin-top:4px;}
@@ -429,7 +428,7 @@ function setupTabs() {
     tab.onclick = () => {
       tabs.forEach(t => t.classList.remove("active"));
       tab.classList.add("active");
-      indicator.style.transform = `translateX(${i * -100}%)`;
+    indicator.style.transform = `translateX(${(tabs.length - 1 - i) * 100}%)`;
       document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
       document.getElementById(`panel-${tab.dataset.tab}`).classList.add("active");
       tg?.HapticFeedback?.impactOccurred?.("light");
@@ -586,9 +585,6 @@ function showToast(msg) {
 }
 
 init();
-  
 </script>
-  <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
-<script>eruda.init();</script>
 </body>
-</html>
+  </html>
