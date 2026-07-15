@@ -388,7 +388,7 @@
 /* ============================================================
    تنظیمات اتصال — این آدرس را به آدرس بک‌اند خودتان تغییر دهید
    ============================================================ */
-const API_BASE = "https://self-production-6223.up.railway.app";
+const API_BASE = "https://self-production-856f.up.railway.app/";
 const SUPPORT_USERNAME = "@SayPouYa";
 
 const tg = window.Telegram?.WebApp;
@@ -468,13 +468,26 @@ function authHeaders() {
 }
 
 async function loadData() {
+  if (!tg?.initData) {
+    showToast("❌ این صفحه باید از داخل دکمه‌ی منوی ربات در تلگرام باز شود");
+    console.warn("initData خالی است — یعنی صفحه مستقیم در مرورگر باز شده، نه از طریق تلگرام.");
+    return;
+  }
   try {
     const res = await fetch(`${API_BASE}/api/me`, { headers: authHeaders() });
-    if (!res.ok) throw new Error("auth");
+    if (res.status === 401) {
+      showToast("❌ شناسایی نشدید — ابتدا با /start در ربات ثبت‌نام کنید");
+      return;
+    }
+    if (!res.ok) {
+      showToast(`❌ خطای سرور (کد ${res.status})`);
+      return;
+    }
     state = await res.json();
     render();
   } catch (e) {
-    showToast("❌ اتصال به سرور برقرار نشد");
+    console.error("خطای اتصال به API_BASE:", API_BASE, e);
+    showToast("❌ اتصال به بک‌اند برقرار نشد (آدرس/CORS رو چک کنید)");
   }
 }
 
