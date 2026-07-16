@@ -7,15 +7,21 @@
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
   :root{
-    --bg-1:#07080d;
-    --bg-2:#0e1220;
+    --bg-1:#060607;
+    --bg-2:#0d0d0f;
     --glass-fill: rgba(255,255,255,0.06);
     --glass-fill-strong: rgba(255,255,255,0.10);
-    --glass-border: rgba(255,255,255,0.14);
+    --glass-border: rgba(212,175,110,0.22);
     --glass-highlight: rgba(255,255,255,0.35);
-    --accent-a:#5b8dff;
-    --accent-b:#8f6bff;
-    --accent-c:#4fd1ff;
+    --gold-1:#f4d98a;
+    --gold-2:#d1a94e;
+    --gold-3:#8a672c;
+    --silver-1:#f2f4f7;
+    --silver-2:#aeb6c2;
+    --silver-3:#5c6472;
+    --accent-a:var(--gold-2);
+    --accent-b:var(--gold-3);
+    --accent-c:var(--silver-2);
     --danger:#ff6b6b;
     --good:#33d17a;
     --text-1:#f5f6fb;
@@ -32,9 +38,9 @@
     font-family:-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Vazirmatn", "Segoe UI", sans-serif;
     color:var(--text-1);
     background:
-      radial-gradient(120% 70% at 15% -10%, rgba(91,141,255,0.35), transparent 60%),
-      radial-gradient(110% 60% at 100% 0%, rgba(143,107,255,0.30), transparent 55%),
-      radial-gradient(140% 90% at 50% 120%, rgba(79,209,255,0.18), transparent 60%),
+      radial-gradient(120% 70% at 15% -10%, rgba(209,169,78,0.22), transparent 60%),
+      radial-gradient(110% 60% at 100% 0%, rgba(174,182,194,0.16), transparent 55%),
+      radial-gradient(140% 90% at 50% 120%, rgba(138,103,44,0.20), transparent 60%),
       var(--bg-1);
     min-height:100vh;
     overflow-x:hidden;
@@ -81,7 +87,7 @@
     display:flex; align-items:center; justify-content:center;
     font-weight:700; font-size:20px;
     background:linear-gradient(150deg, var(--accent-a), var(--accent-b));
-    box-shadow:0 6px 18px -6px rgba(91,141,255,0.6), 0 1px 0 rgba(255,255,255,0.4) inset;
+    box-shadow:0 6px 18px -6px rgba(209,169,78,0.55), 0 1px 0 rgba(255,255,255,0.4) inset;
     flex-shrink:0;
     color:#fff;
   }
@@ -124,7 +130,7 @@
     width:calc((100% - 10px)/3);
     border-radius:999px;
     background:linear-gradient(135deg, var(--accent-a), var(--accent-b));
-    box-shadow:0 6px 16px -6px rgba(91,141,255,0.7), 0 1px 0 rgba(255,255,255,0.35) inset;
+    box-shadow:0 6px 16px -6px rgba(209,169,78,0.6), 0 1px 0 rgba(255,255,255,0.35) inset;
     transition:transform .35s cubic-bezier(.4,0,.2,1);
     z-index:1;
   }
@@ -171,19 +177,6 @@
   }
   .switch.on::after{transform:translateX(-19px);}
 
-  /* chip grid for fonts / text modes */
-  .chip-grid{display:flex; flex-wrap:wrap; gap:8px; margin-top:4px;}
-  .chip{
-    padding:9px 14px; border-radius:999px; font-size:13px; font-weight:600;
-    background:rgba(255,255,255,0.06); border:1px solid var(--glass-border);
-    color:var(--text-2); cursor:pointer; transition:all .2s ease;
-  }
-  .chip.active{
-    color:#fff; border-color:transparent;
-    background:linear-gradient(135deg, var(--accent-a), var(--accent-c));
-    box-shadow:0 6px 14px -6px rgba(79,209,255,0.6);
-  }
-
   textarea, input[type=text]{
     width:100%; padding:12px 14px; border-radius:var(--radius-sm);
     background:rgba(255,255,255,0.06); border:1px solid var(--glass-border);
@@ -196,7 +189,7 @@
     width:100%; padding:13px; border-radius:var(--radius-sm);
     background:linear-gradient(135deg, var(--accent-a), var(--accent-b));
     border:none; color:#fff; font-weight:700; font-size:14px;
-    cursor:pointer; box-shadow:0 10px 20px -10px rgba(91,141,255,0.6), 0 1px 0 rgba(255,255,255,0.3) inset;
+    cursor:pointer; box-shadow:0 10px 20px -10px rgba(209,169,78,0.55), 0 1px 0 rgba(255,255,255,0.3) inset;
     margin-top:6px;
   }
   .btn.danger{background:linear-gradient(135deg, #ff8080, var(--danger));}
@@ -215,7 +208,7 @@
   .about-icon{
     width:38px; height:38px; border-radius:12px; flex-shrink:0;
     display:flex; align-items:center; justify-content:center; font-size:17px;
-    background:linear-gradient(150deg, rgba(91,141,255,0.35), rgba(143,107,255,0.25));
+    background:linear-gradient(150deg, rgba(209,169,78,0.30), rgba(174,182,194,0.20));
     border:1px solid var(--glass-border);
   }
   .about-text-title{font-size:13.5px; font-weight:700;}
@@ -238,13 +231,64 @@
   @keyframes pulse{0%,100%{opacity:.5;} 50%{opacity:1;}}
 
   .footer-note{text-align:center; font-size:11.5px; color:var(--text-3); margin-top:8px; line-height:1.8;}
+
+  /* ===== Logo badge (base44-style app icon) ===== */
+  .logo-badge{
+    width:56px; height:56px; border-radius:29% 29% 32% 32% / 30%;
+    flex-shrink:0; overflow:hidden; position:relative;
+    background:#000;
+    border:1px solid rgba(255,255,255,0.18);
+    box-shadow:0 8px 20px -8px rgba(0,0,0,0.7), 0 1px 0 rgba(255,255,255,0.25) inset;
+  }
+  .logo-badge img{width:100%; height:100%; object-fit:cover; display:block;}
+  .logo-badge::after{
+    content:""; position:absolute; inset:0; border-radius:inherit;
+    background:linear-gradient(155deg, rgba(255,255,255,0.25), transparent 45%);
+    pointer-events:none;
+  }
+  .logo-badge.large{width:96px; height:96px; margin:0 auto 14px; border-radius:26% 26% 30% 30% / 27%;}
+
+  /* ===== Expiry card ===== */
+  .expiry-bar-track{
+    height:8px; border-radius:999px; background:rgba(255,255,255,0.08);
+    overflow:hidden; margin-top:10px;
+  }
+  .expiry-bar-fill{
+    height:100%; border-radius:999px;
+    background:linear-gradient(90deg, var(--gold-3), var(--gold-1));
+    width:0%; transition:width .4s ease;
+  }
+  .expiry-value{font-size:15px; font-weight:700; color:var(--gold-1);}
+
+  /* ===== Font cards (replaces messy wrapped chips) ===== */
+  .font-grid{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:4px;}
+  .font-card{
+    display:flex; align-items:center; justify-content:space-between; gap:8px;
+    padding:11px 12px; border-radius:var(--radius-sm);
+    background:rgba(255,255,255,0.05); border:1px solid var(--glass-border);
+    font-size:12.8px; font-weight:600; color:var(--text-2);
+    cursor:pointer; transition:all .2s ease;
+  }
+  .font-card.active{
+    color:#0e0d0a; border-color:transparent;
+    background:linear-gradient(135deg, var(--gold-1), var(--gold-2));
+    box-shadow:0 6px 16px -6px rgba(209,169,78,0.55);
+  }
+  .font-card .check{
+    width:16px; height:16px; border-radius:50%; flex-shrink:0;
+    border:1.5px solid var(--glass-border);
+    display:flex; align-items:center; justify-content:center; font-size:10px;
+  }
+  .font-card.active .check{background:#0e0d0a; border-color:#0e0d0a; color:var(--gold-1);}
 </style>
 </head>
 <body>
 <div class="app">
 
   <div class="header">
-    <div class="avatar" id="avatar">N</div>
+    <div class="logo-badge" id="avatarBadge">
+      <img src="data:image/webp;base64,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" alt="NovaService">
+    </div>
     <div class="head-info">
       <div class="head-name" id="userName">در حال بارگذاری...</div>
       <div class="head-sub" id="userUsername">&nbsp;</div>
@@ -268,6 +312,13 @@
         <div class="stat"><div class="stat-num" id="statDiamonds">--</div><div class="stat-label">موجودی الماس</div></div>
         <div class="stat"><div class="stat-num" id="statReferral">--</div><div class="stat-label">زیرمجموعه</div></div>
       </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">⏳ انقضای سلف</div>
+      <div class="card-desc">تخمین زمان باقی‌مانده تا اتمام موجودی الماس (در صورت روشن بودن سلف)</div>
+      <div class="expiry-value" id="expiryValue">--</div>
+      <div class="expiry-bar-track"><div class="expiry-bar-fill" id="expiryBar"></div></div>
     </div>
 
     <div class="card">
@@ -296,13 +347,13 @@
     <div class="card">
       <div class="card-title">🔤 فونت نام و بیو</div>
       <div class="card-desc">فونتی که برای زمان‌نگار پروفایل استفاده می‌شود.</div>
-      <div class="chip-grid" id="fontGrid"></div>
+      <div class="font-grid" id="fontGrid"></div>
     </div>
 
     <div class="card">
       <div class="card-title">🖊️ حالت متن ارسالی</div>
       <div class="card-desc">قالب‌بندی خودکار پیام‌های ارسالی شما.</div>
-      <div class="chip-grid" id="textModeGrid"></div>
+      <div class="font-grid" id="textModeGrid"></div>
     </div>
 
     <div class="card">
@@ -312,7 +363,7 @@
         <div class="switch" id="sw-date_enabled" data-field="date_enabled"></div>
       </div>
       <div class="card-desc" style="margin:10px 0 6px;">نوع تقویم</div>
-      <div class="chip-grid" id="dateTypeGrid"></div>
+      <div class="font-grid" id="dateTypeGrid"></div>
     </div>
 
     <div class="card">
@@ -343,9 +394,12 @@
 
   <!-- ===== ABOUT ===== -->
   <div class="panel" id="panel-about">
-    <div class="card">
-      <div class="card-title">✨ NovaSelf چیست؟</div>
-      <div class="card-desc">NovaSelf یک سلف‌بات اختصاصی است که با اتصال به حساب تلگرام شما، مجموعه‌ای از قابلیت‌های خودکار و شخصی‌سازی را در اختیارتان می‌گذارد؛ همه چیز از طریق همین پنل قابل مدیریت است.</div>
+    <div class="card" style="text-align:center;">
+      <div class="logo-badge large" id="aboutLogo">
+        <img src="data:image/webp;base64,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" alt="NovaService">
+      </div>
+      <div class="card-title" style="font-size:16px;">✨ NovaSelf چیست؟</div>
+      <div class="card-desc" style="text-align:right;">NovaSelf یک سلف‌بات اختصاصی است که با اتصال به حساب تلگرام شما، مجموعه‌ای از قابلیت‌های خودکار و شخصی‌سازی را در اختیارتان می‌گذارد؛ همه چیز از طریق همین پنل قابل مدیریت است.</div>
 
       <div class="about-feature">
         <div class="about-icon">⌚</div>
@@ -387,7 +441,7 @@
 /* ============================================================
    تنظیمات اتصال — این آدرس را به آدرس بک‌اند خودتان تغییر دهید
    ============================================================ */
-const API_BASE = "https://self-production-856f.up.railway.app";
+const API_BASE = "https://YOUR_BACKEND_DOMAIN.example.com";
 const SUPPORT_USERNAME = "@SayPouYa";
 
 const tg = window.Telegram?.WebApp;
@@ -402,9 +456,9 @@ const TEXTMODE_NAMES = {0:"خاموش",1:"نقل‌قول",2:"بولد",3:"زی�
 const DATE_TYPE_NAMES = {"gregorian":"میلادی","shamsi":"شمسی","qamari":"قمری"};
 
 function init() {
-  if (tg) { tg.ready(); tg.expand(); tg.setHeaderColor?.("#0e1220"); }
+  if (tg) { tg.ready(); tg.expand(); tg.setHeaderColor?.("#0d0d0f"); }
   setupTabs();
-  setupChipGrid("fontGrid", FONT_NAMES, "font_id");
+  setupFontGrid();
   setupChipGrid("textModeGrid", TEXTMODE_NAMES, "text_mode");
   setupChipGrid("dateTypeGrid", DATE_TYPE_NAMES, "date_type");
   setupSwitches();
@@ -436,16 +490,29 @@ function setupTabs() {
   });
 }
 
+function setupFontGrid() {
+  const grid = document.getElementById("fontGrid");
+  grid.innerHTML = "";
+  Object.entries(FONT_NAMES).forEach(([value, label]) => {
+    const card = document.createElement("div");
+    card.className = "font-card";
+    card.dataset.value = value;
+    card.innerHTML = `<span>${label}</span><span class="check">✓</span>`;
+    card.onclick = () => updateField("font_id", Number(value), "fontGrid");
+    grid.appendChild(card);
+  });
+}
+
 function setupChipGrid(gridId, namesMap, field) {
   const grid = document.getElementById(gridId);
   grid.innerHTML = "";
   Object.entries(namesMap).forEach(([value, label]) => {
-    const chip = document.createElement("div");
-    chip.className = "chip";
-    chip.textContent = label;
-    chip.dataset.value = value;
-    chip.onclick = () => updateField(field, isNaN(value) ? value : Number(value), gridId);
-    grid.appendChild(chip);
+    const card = document.createElement("div");
+    card.className = "font-card";
+    card.dataset.value = value;
+    card.innerHTML = `<span>${label}</span><span class="check">✓</span>`;
+    card.onclick = () => updateField(field, isNaN(value) ? value : Number(value), gridId);
+    grid.appendChild(card);
   });
 }
 
@@ -500,7 +567,7 @@ async function updateField(field, value, gridIdToSync) {
     });
     const data = await res.json();
     if (!res.ok || !data.ok) throw new Error(data.error || "update-failed");
-    state = data.user;
+    state = data;
     render();
     showToast("✅ تغییرات ذخیره شد");
   } catch (e) {
@@ -520,7 +587,7 @@ async function saveSecretary() {
     });
     const data = await res.json();
     if (!res.ok || !data.ok) throw new Error();
-    state = data.user;
+    state = data;
     render();
     showToast("✅ تنظیمات منشی ذخیره شد");
   } catch (e) {
@@ -536,7 +603,6 @@ function render() {
   const name = [tgUser?.first_name, tgUser?.last_name].filter(Boolean).join(" ") || "کاربر";
   document.getElementById("userName").textContent = name;
   document.getElementById("userUsername").textContent = tgUser?.username ? "@" + tgUser.username : "بدون نام‌کاربری";
-  document.getElementById("avatar").textContent = name.charAt(0).toUpperCase();
 
   const pill = document.getElementById("statusPill");
   pill.classList.toggle("on", !!state.status);
@@ -544,12 +610,17 @@ function render() {
   document.getElementById("statusPillText").textContent = state.status ? "سلف فعال" : "سلف غیرفعال";
 
   // Profile tab
-  document.getElementById("statDiamonds").textContent = state.diamonds_formatted ?? "--";
+  document.getElementById("statDiamonds").textContent = state.diamonds_rounded ?? "--";
   document.getElementById("statReferral").textContent = state.referral_count ?? 0;
   document.getElementById("infoId").textContent = tgUser?.id ?? "--";
   document.getElementById("infoUsername").textContent = tgUser?.username ? "@" + tgUser.username : "--";
   document.getElementById("infoLang").textContent = tgUser?.language_code ?? "--";
   document.getElementById("infoJoined").textContent = state.joined_at ?? "--";
+
+  document.getElementById("expiryValue").textContent = state.expiry_text ?? "--";
+  const maxDiamondsRef = 30 * 24 * 5; // مرجع نواری: معادل حدوداً یک ماه روشن بودن، فقط برای نمایش بصری
+  const pct = Math.max(0, Math.min(100, ((state.diamonds_rounded ?? 0) / maxDiamondsRef) * 100));
+  document.getElementById("expiryBar").style.width = pct + "%";
 
   // Settings
   setSwitch("sw-status", state.status);
@@ -570,7 +641,7 @@ function setSwitch(id, on) {
   document.getElementById(id).classList.toggle("on", !!on);
 }
 function setActiveChip(gridId, value) {
-  document.querySelectorAll(`#${gridId} .chip`).forEach(chip => {
+  document.querySelectorAll(`#${gridId} .font-card`).forEach(chip => {
     chip.classList.toggle("active", String(chip.dataset.value) === String(value));
   });
 }
@@ -587,4 +658,4 @@ function showToast(msg) {
 init();
 </script>
 </body>
-  </html>
+</html>
